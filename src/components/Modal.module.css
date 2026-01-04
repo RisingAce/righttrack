@@ -1,157 +1,98 @@
-.overlay {
+.wrapper {
   position: fixed;
   inset: 0;
-  background: rgba(6, 8, 15, 0.85);
-  backdrop-filter: var(--blur-lg);
-  -webkit-backdrop-filter: var(--blur-lg);
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  z-index: 1000;
-  padding: var(--spacing-lg);
+  z-index: 200;
+  padding: var(--spacing-md);
+}
+
+@media (min-width: 640px) {
+  .wrapper {
+    align-items: center;
+  }
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .modal {
   position: relative;
-  background: var(--gradient-card);
-  backdrop-filter: var(--blur-xl);
-  -webkit-backdrop-filter: var(--blur-xl);
-  border-radius: var(--radius-2xl);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: var(--shadow-2xl), 0 0 0 1px rgba(16, 185, 129, 0.1);
+  width: 100%;
   max-height: 90vh;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
-.modal::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--gradient-accent);
-  opacity: 0.8;
+@media (min-width: 640px) {
+  .modal {
+    border-radius: var(--radius-xl);
+  }
 }
 
-/* Sizes */
 .sm {
-  width: 100%;
   max-width: 400px;
 }
 
 .md {
-  width: 100%;
-  max-width: 600px;
+  max-width: 500px;
 }
 
 .lg {
-  width: 100%;
-  max-width: 800px;
+  max-width: 640px;
 }
 
 .full {
-  width: 100%;
-  max-width: 95vw;
-  max-height: 95vh;
+  max-width: none;
+  height: 100%;
+  max-height: 100%;
+  border-radius: 0;
 }
 
-/* Header */
 .header {
-  padding: var(--spacing-xl);
-  padding-bottom: var(--spacing-lg);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-md);
-  background: linear-gradient(180deg, rgba(26, 31, 53, 0.8) 0%, transparent 100%);
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .title {
   font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 800;
+  font-size: 1.25rem;
+  font-weight: 600;
   color: var(--color-text-primary);
-  letter-spacing: -0.01em;
-  line-height: 1.2;
 }
 
-.closeBtn {
-  width: 40px;
-  height: 40px;
+.close {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-bg-glass);
-  backdrop-filter: var(--blur-sm);
-  -webkit-backdrop-filter: var(--blur-sm);
-  border-radius: var(--radius-lg);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
   color: var(--color-text-muted);
-  transition: all var(--transition-normal);
-  flex-shrink: 0;
+  transition: all var(--transition-fast);
 }
 
-.closeBtn:hover {
-  background: var(--color-bg-hover);
+.close:hover {
+  background: var(--color-bg-elevated);
   color: var(--color-text-primary);
-  transform: rotate(90deg) scale(1.1);
-  border-color: rgba(16, 185, 129, 0.3);
 }
 
-/* Content */
 .content {
-  padding: var(--spacing-xl);
-  overflow-y: auto;
   flex: 1;
-}
-
-.content::-webkit-scrollbar {
-  width: 8px;
-}
-
-.content::-webkit-scrollbar-track {
-  background: transparent;
-  margin: var(--spacing-md);
-}
-
-.content::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--color-accent-primary), var(--color-accent-tertiary));
-  border-radius: var(--radius-full);
-  box-shadow: 0 0 6px rgba(16, 185, 129, 0.3);
-}
-
-/* Footer */
-.footer {
-  padding: var(--spacing-xl);
-  padding-top: var(--spacing-lg);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  display: flex;
-  gap: var(--spacing-md);
-  justify-content: flex-end;
-  background: linear-gradient(0deg, rgba(26, 31, 53, 0.8) 0%, transparent 100%);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .overlay {
-    padding: var(--spacing-md);
-  }
-  
-  .modal {
-    border-radius: var(--radius-xl);
-  }
-  
-  .header,
-  .content,
-  .footer {
-    padding: var(--spacing-lg);
-  }
-  
-  .title {
-    font-size: 1.25rem;
-  }
+  overflow-y: auto;
+  padding: var(--spacing-lg);
 }

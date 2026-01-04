@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Play, Square, Check, RefreshCw, ChevronRight, 
@@ -16,6 +16,7 @@ import styles from './Workout.module.css'
 
 export const Workout = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const { 
     templates, 
     currentWorkout, 
@@ -35,6 +36,16 @@ export const Workout = () => {
   const [showFinishConfirm, setShowFinishConfirm] = useState(false)
   const [showDetailModal, setShowDetailModal] = useState(false)
   const [exerciseGifs, setExerciseGifs] = useState({})
+
+  // Handle starting workout from navigation state (e.g., from home page)
+  useEffect(() => {
+    if (location.state?.startTemplateId && !currentWorkout) {
+      startWorkout(location.state.startTemplateId)
+      setShowTemplates(false)
+      // Clear the location state so it doesn't start again on refresh
+      window.history.replaceState({}, document.title)
+    }
+  }, [location.state, startWorkout, currentWorkout])
 
   const handleStartWorkout = (templateId) => {
     startWorkout(templateId)

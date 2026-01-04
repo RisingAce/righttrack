@@ -1,102 +1,52 @@
 .card {
-  position: relative;
-  background: var(--gradient-card);
-  backdrop-filter: var(--blur-md);
-  -webkit-backdrop-filter: var(--blur-md);
-  border-radius: var(--radius-xl);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: var(--shadow-lg);
-  transition: all var(--transition-normal);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   overflow: hidden;
 }
 
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--gradient-shine);
-  opacity: 0;
-  transition: opacity var(--transition-normal);
-  pointer-events: none;
-}
-
-.card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--gradient-accent);
-  opacity: 0;
-  transition: opacity var(--transition-normal);
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-xl);
-  border-color: rgba(16, 185, 129, 0.2);
-}
-
-.card:hover::before {
-  opacity: 1;
-}
-
-.card:hover::after {
-  opacity: 1;
-}
-
-.cardContent {
+.default {
   padding: var(--spacing-lg);
-  position: relative;
-  z-index: 1;
 }
 
-/* Sizes */
-.sm .cardContent {
+.compact {
   padding: var(--spacing-md);
 }
 
-.md .cardContent {
-  padding: var(--spacing-lg);
+.flush {
+  padding: 0;
 }
 
-.lg .cardContent {
-  padding: var(--spacing-xl);
-}
-
-/* Variants */
-.elevated {
-  box-shadow: var(--shadow-xl);
-}
-
-.elevated:hover {
-  box-shadow: var(--shadow-2xl), var(--shadow-glow);
-}
-
-.glow {
-  box-shadow: var(--shadow-lg), var(--shadow-glow);
-  border-color: rgba(16, 185, 129, 0.2);
-}
-
-.glow:hover {
-  box-shadow: var(--shadow-xl), var(--shadow-glow-lg);
-  border-color: rgba(16, 185, 129, 0.4);
-}
-
-.glow::after {
-  opacity: 1;
-}
-
-/* Interactive */
-.interactive {
+.clickable {
   cursor: pointer;
-  user-select: none;
+  transition: all var(--transition-fast);
 }
 
-.interactive:active {
-  transform: translateY(-2px) scale(0.98);
+.clickable:hover {
+  background: var(--color-bg-elevated);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.header {
+  margin-bottom: var(--spacing-md);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.description {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.content {
+  color: var(--color-text-primary);
 }

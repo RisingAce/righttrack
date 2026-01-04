@@ -1,88 +1,41 @@
 .page {
   padding: var(--spacing-lg);
   padding-top: calc(var(--spacing-xl) + env(safe-area-inset-top));
-  padding-bottom: calc(120px + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xl);
-  animation: fadeIn 0.4s ease;
 }
 
 .header {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
-  animation: slideDown 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .title {
   font-family: var(--font-display);
-  font-size: 2rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent-secondary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  font-size: 1.75rem;
+  font-weight: 600;
 }
 
 .subtitle {
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   color: var(--color-text-secondary);
-  font-weight: 500;
 }
 
 .calendar {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
-  animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s backwards;
 }
 
 .dayCard {
-  position: relative;
-  background: var(--gradient-card);
-  backdrop-filter: var(--blur-md);
-  -webkit-backdrop-filter: var(--blur-md);
-  border-radius: var(--radius-xl);
-  padding: var(--spacing-lg);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: var(--shadow-md);
-  transition: all var(--transition-normal);
-  overflow: hidden;
-}
-
-.dayCard::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: var(--gradient-accent);
-  opacity: 0;
-  transition: opacity var(--transition-normal);
-}
-
-.dayCard:hover {
-  transform: translateX(4px);
-  box-shadow: var(--shadow-lg);
-  border-color: rgba(16, 185, 129, 0.2);
-}
-
-.dayCard:hover::before {
-  opacity: 1;
+  transition: all var(--transition-fast);
 }
 
 .dayCard.today {
   border: 2px solid var(--color-accent-primary);
-  background: linear-gradient(135deg, rgba(26, 31, 53, 0.95) 0%, rgba(16, 185, 129, 0.05) 100%);
-  box-shadow: var(--shadow-lg), var(--shadow-glow);
-}
-
-.dayCard.today::before {
-  opacity: 1;
+  background: var(--color-accent-soft);
 }
 
 .dayHeader {
@@ -94,36 +47,31 @@
 
 .dayInfo {
   display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
+  align-items: baseline;
+  gap: var(--spacing-sm);
 }
 
 .dayShort {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  font-weight: 800;
+  font-size: 1.5rem;
+  font-weight: 700;
   color: var(--color-text-primary);
-  line-height: 1;
-  letter-spacing: -0.02em;
-  min-width: 60px;
+  font-family: var(--font-display);
 }
 
 .dayLabel {
-  font-size: 1rem;
+  font-size: 0.875rem;
   color: var(--color-text-secondary);
-  font-weight: 600;
 }
 
 .todayBadge {
-  padding: var(--spacing-xs) var(--spacing-md);
-  background: var(--gradient-primary);
-  color: white;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--color-accent-primary);
+  color: var(--color-bg-primary);
   border-radius: var(--radius-full);
-  font-size: 0.6875rem;
-  font-weight: 800;
+  font-size: 0.7rem;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  box-shadow: var(--shadow-glow);
 }
 
 .assignedTemplate {
@@ -137,110 +85,84 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--spacing-md) var(--spacing-lg);
-  background: var(--color-bg-glass);
-  backdrop-filter: var(--blur-sm);
-  -webkit-backdrop-filter: var(--blur-sm);
-  border-radius: var(--radius-lg);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: var(--spacing-md);
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-md);
   text-align: left;
-  transition: all var(--transition-normal);
-  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
 }
 
 .templateButton:hover {
   background: var(--color-bg-hover);
-  border-color: rgba(16, 185, 129, 0.3);
-  transform: translateX(4px);
-  box-shadow: var(--shadow-md);
 }
 
 .templateInfo {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .templateName {
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-text-primary);
-  font-size: 1rem;
-  font-family: var(--font-display);
+  font-size: 0.95rem;
 }
 
 .templateMeta {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   color: var(--color-text-muted);
-  font-weight: 500;
 }
 
 .chevron {
-  color: var(--color-accent-primary);
-  transition: transform var(--transition-fast);
-}
-
-.templateButton:hover .chevron {
-  transform: translateX(4px);
+  color: var(--color-text-muted);
 }
 
 .removeBtn {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-bg-glass);
-  backdrop-filter: var(--blur-sm);
-  -webkit-backdrop-filter: var(--blur-sm);
-  border-radius: var(--radius-lg);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-sm);
   color: var(--color-text-muted);
-  transition: all var(--transition-normal);
+  transition: all var(--transition-fast);
   flex-shrink: 0;
-  box-shadow: var(--shadow-sm);
 }
 
 .removeBtn:hover {
-  background: rgba(239, 68, 68, 0.15);
-  border-color: rgba(239, 68, 68, 0.3);
+  background: rgba(248, 113, 113, 0.15);
   color: var(--color-danger);
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
 }
 
 .emptyDay {
   width: 100%;
   padding: var(--spacing-lg);
-  background: var(--color-bg-glass);
-  backdrop-filter: var(--blur-sm);
-  -webkit-backdrop-filter: var(--blur-sm);
-  border: 2px dashed rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-lg);
+  background: var(--color-bg-deep);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-xs);
-  transition: all var(--transition-normal);
+  transition: all var(--transition-fast);
 }
 
 .emptyDay:hover {
   border-color: var(--color-accent-primary);
   background: var(--color-accent-soft);
-  transform: translateY(-2px);
 }
 
 .emptyText {
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
   font-style: italic;
-  font-weight: 500;
 }
 
 .emptyAction {
-  font-size: 0.8125rem;
-  color: var(--color-accent-primary);
-  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
 }
 
 /* Template Picker Modal */
@@ -248,87 +170,62 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
-  max-height: 60vh;
-  overflow-y: auto;
-  padding: var(--spacing-xs);
 }
 
 .templateOption {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--spacing-lg);
-  background: var(--color-bg-glass);
-  backdrop-filter: var(--blur-sm);
-  -webkit-backdrop-filter: var(--blur-sm);
-  border: 2px solid rgba(255, 255, 255, 0.06);
-  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  background: var(--color-bg-elevated);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
   text-align: left;
-  transition: all var(--transition-normal);
-  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
 }
 
 .templateOption:hover {
   background: var(--color-bg-hover);
-  border-color: rgba(16, 185, 129, 0.3);
-  transform: translateX(4px);
-  box-shadow: var(--shadow-md);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .templateOption.selected {
   background: var(--color-accent-soft);
   border-color: var(--color-accent-primary);
-  box-shadow: var(--shadow-md), 0 0 20px rgba(16, 185, 129, 0.2);
 }
 
 .templateOptionInfo {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .templateOptionName {
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-text-primary);
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  font-size: 1rem;
-  font-family: var(--font-display);
 }
 
 .defaultBadge {
-  padding: 3px var(--spacing-sm);
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  color: var(--color-blue);
+  padding: 2px var(--spacing-xs);
+  background: var(--color-info);
+  background: rgba(96, 165, 250, 0.15);
+  color: var(--color-info);
   border-radius: var(--radius-sm);
-  font-size: 0.625rem;
-  font-weight: 700;
+  font-size: 0.65rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .templateOptionDesc {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   color: var(--color-text-secondary);
-  font-weight: 500;
 }
 
 .checkIcon {
   color: var(--color-accent-primary);
   flex-shrink: 0;
-  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.5));
-}
-
-@media (max-width: 768px) {
-  .dayShort {
-    font-size: 1.5rem;
-    min-width: 48px;
-  }
-  
-  .dayLabel {
-    font-size: 0.875rem;
-  }
 }

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Play, Plus, Flame, Trophy, Calendar, ChevronRight, Sparkles } from 'lucide-react'
+import { Play, Plus, Flame, Trophy, Calendar, ChevronRight, Sparkles, Dumbbell, CheckCircle2 } from 'lucide-react'
 import { useAppStore } from '../store/StoreContext'
 import { Button } from '../components/Button'
 import { Card, CardContent } from '../components/Card'
@@ -8,7 +8,7 @@ import styles from './Home.module.css'
 
 export const Home = () => {
   const navigate = useNavigate()
-  const { user, templates, currentWorkout, getWorkoutStats, getTodayTemplate } = useAppStore()
+  const { user, templates, currentWorkout, getWorkoutStats, getTodayTemplate, startWorkout } = useAppStore()
   const stats = getWorkoutStats()
 
   const todayWorkout = getTodayTemplate()
@@ -18,6 +18,19 @@ export const Home = () => {
     if (hour < 12) return 'Good morning'
     if (hour < 17) return 'Good afternoon'
     return 'Good evening'
+  }
+
+  const handleStartTodayWorkout = () => {
+    if (todayWorkout) {
+      // Pass the template ID to the workout page to start immediately
+      navigate('/workout', { state: { startTemplateId: todayWorkout.id } })
+    }
+  }
+
+  const handleChooseDifferentWorkout = () => {
+    // Navigate to workout page without starting a workout
+    // The workout page will show template selection
+    navigate('/workout')
   }
 
   return (
@@ -107,27 +120,69 @@ export const Home = () => {
       </section>
 
       <section className={styles.quickStart}>
-        <h2 className={styles.sectionTitle}>Quick Start</h2>
+        <h2 className={styles.sectionTitle}>Today's Plan</h2>
         
         {todayWorkout && !currentWorkout ? (
-          <Card delay={0.2}>
+          <Card delay={0.2} className={styles.todayCard}>
             <CardContent>
               <div className={styles.todayHeader}>
-                <span className={styles.todayBadge}>Today's Workout</span>
+                <span className={styles.todayBadge}>
+                  <Calendar size={14} />
+                  Today's Workout
+                </span>
               </div>
               <h3 className={styles.todayTitle}>{todayWorkout.name}</h3>
-              <p className={styles.todayMeta}>
-                {todayWorkout.exercises.length} exercises
-                {todayWorkout.description && ` · ${todayWorkout.description}`}
-              </p>
-              <Button
-                icon={Play}
-                onClick={() => navigate('/workout')}
-                fullWidth
-                className={styles.startBtn}
-              >
-                Start Workout
-              </Button>
+              {todayWorkout.description && (
+                <p className={styles.todayDescription}>{todayWorkout.description}</p>
+              )}
+              
+              <div className={styles.todayExercises}>
+                <div className={styles.exercisesHeader}>
+                  <Dumbbell size={18} />
+                  <span>{todayWorkout.exercises.length} Exercises</span>
+                </div>
+                
+                {todayWorkout.exercises.map((exercise, idx) => (
+                  <motion.div
+                    key={idx}
+                    className={styles.exerciseItem}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 + idx * 0.05 }}
+                  >
+                    <div className={styles.exerciseNumber}>{idx + 1}</div>
+                    <div className={styles.exerciseDetails}>
+                      <span className={styles.exerciseName}>{exercise.exerciseName}</span>
+                      <div className={styles.exerciseSets}>
+                        {exercise.sets.map((set, setIdx) => (
+                          <span key={setIdx} className={styles.setInfo}>
+                            {set.reps} reps
+                            {set.weight > 0 && ` × ${set.weight}kg`}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <CheckCircle2 size={16} className={styles.exerciseCheck} />
+                  </motion.div>
+                ))}
+              </div>
+              
+              <div className={styles.workoutActions}>
+                <Button
+                  icon={Play}
+                  onClick={handleStartTodayWorkout}
+                  fullWidth
+                  className={styles.startBtn}
+                >
+                  Start Workout
+                </Button>
+                <button 
+                  className={styles.altWorkoutBtn}
+                  onClick={handleChooseDifferentWorkout}
+                >
+                  or choose a different workout
+                </button>
+              </div>
             </CardContent>
           </Card>
         ) : !currentWorkout ? (
