@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Play, Plus, Flame, Trophy, Calendar, ChevronRight, Sparkles, Dumbbell, CheckCircle2 } from 'lucide-react'
@@ -6,12 +7,33 @@ import { Button } from '../components/Button'
 import { Card, CardContent } from '../components/Card'
 import styles from './Home.module.css'
 
+const DAY_KEYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+const DAY_LABELS = {
+  monday: 'Monday',
+  tuesday: 'Tuesday',
+  wednesday: 'Wednesday',
+  thursday: 'Thursday',
+  friday: 'Friday',
+  saturday: 'Saturday',
+  sunday: 'Sunday',
+}
+
 export const Home = () => {
   const navigate = useNavigate()
-  const { user, templates, currentWorkout, getWorkoutStats, getTodayTemplate, startWorkout } = useAppStore()
+  const { user, templates, currentWorkout, getWorkoutStats, getTodayTemplate, startWorkout, weeklySchedule } = useAppStore()
   const stats = getWorkoutStats()
 
   const todayWorkout = getTodayTemplate()
+  const todayIdx = new Date().getDay() === 0 ? 6 : new Date().getDay() - 1
+  const [selectedDay, setSelectedDay] = useState(DAY_KEYS[todayIdx])
+
+  const getTemplateForDay = (dayKey) => {
+    const templateId = weeklySchedule?.[dayKey]
+    if (!templateId) return null
+    return templates.find(t => t.id === templateId) || null
+  }
+
+  const selectedTemplate = getTemplateForDay(selectedDay)
 
   const greeting = () => {
     const hour = new Date().getHours()
@@ -20,10 +42,18 @@ export const Home = () => {
     return 'Good evening'
   }
 
-  const handleStartTodayWorkout = () => {
-    if (todayWorkout) {
+  const handleStartSelectedWorkout = () => {
+    const template = selectedTemplate || todayWorkout
+    if (template) {
+      // Start immediately to avoid relying on navigation state
+      const started = startWorkout(template.id)
+      if (!started) {
+        // Fallback to workout page if something went wrong
+        navigate('/workout', { state: { startTemplateId: template.id } })
+        return
+      }
       // Pass the template ID to the workout page to start immediately
-      navigate('/workout', { state: { startTemplateId: todayWorkout.id } })
+      navigate('/workout')
     }
   }
 
@@ -71,7 +101,7 @@ export const Home = () => {
               </div>
               <h3 className={styles.activeTitle}>{currentWorkout.templateName}</h3>
               <p className={styles.activeSubtitle}>
-                Continue your workout →
+                Pick up where you left off
               </p>
             </CardContent>
           </Card>
@@ -120,29 +150,42 @@ export const Home = () => {
       </section>
 
       <section className={styles.quickStart}>
-        <h2 className={styles.sectionTitle}>Today's Plan</h2>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Plan</h2>
+          <div className={styles.dayChips}>
+            {DAY_KEYS.map((day) => (
+              <button
+                key={day}
+                className={`${styles.dayChip} ${selectedDay === day ? styles.dayChipActive : ''}`}
+                onClick={() => setSelectedDay(day)}
+              >
+                {DAY_LABELS[day].slice(0, 3)}
+              </button>
+            ))}
+          </div>
+        </div>
         
-        {todayWorkout && !currentWorkout ? (
+        {selectedTemplate && !currentWorkout ? (
           <Card delay={0.2} className={styles.todayCard}>
             <CardContent>
               <div className={styles.todayHeader}>
                 <span className={styles.todayBadge}>
                   <Calendar size={14} />
-                  Today's Workout
+                  {DAY_LABELS[selectedDay]} Workout
                 </span>
               </div>
-              <h3 className={styles.todayTitle}>{todayWorkout.name}</h3>
-              {todayWorkout.description && (
-                <p className={styles.todayDescription}>{todayWorkout.description}</p>
+              <h3 className={styles.todayTitle}>{selectedTemplate.name}</h3>
+              {selectedTemplate.description && (
+                <p className={styles.todayDescription}>{selectedTemplate.description}</p>
               )}
               
               <div className={styles.todayExercises}>
                 <div className={styles.exercisesHeader}>
                   <Dumbbell size={18} />
-                  <span>{todayWorkout.exercises.length} Exercises</span>
+                  <span>{selectedTemplate.exercises.length} Exercises</span>
                 </div>
                 
-                {todayWorkout.exercises.map((exercise, idx) => (
+                {selectedTemplate.exercises.map((exercise, idx) => (
                   <motion.div
                     key={idx}
                     className={styles.exerciseItem}
@@ -157,7 +200,7 @@ export const Home = () => {
                         {exercise.sets.map((set, setIdx) => (
                           <span key={setIdx} className={styles.setInfo}>
                             {set.reps} reps
-                            {set.weight > 0 && ` × ${set.weight}kg`}
+                            {set.weight > 0 && ` x ${set.weight}kg`}
                           </span>
                         ))}
                       </div>
@@ -170,11 +213,11 @@ export const Home = () => {
               <div className={styles.workoutActions}>
                 <Button
                   icon={Play}
-                  onClick={handleStartTodayWorkout}
+                  onClick={handleStartSelectedWorkout}
                   fullWidth
                   className={styles.startBtn}
                 >
-                  Start Workout
+                  Start {DAY_LABELS[selectedDay]}
                 </Button>
                 <button 
                   className={styles.altWorkoutBtn}

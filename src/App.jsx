@@ -11,11 +11,11 @@ import { useExerciseCache } from './hooks/useExerciseCache'
 
 function App() {
   // Prefetch exercises on app load for offline use
-  useExerciseCache()
+  const cacheStatus = useExerciseCache()
 
   return (
     <StoreProvider>
-      <Layout>
+      <Layout cacheStatus={cacheStatus}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/workout" element={<Workout />} />

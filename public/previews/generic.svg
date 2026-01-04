@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#060812" />
+      <stop offset="100%" stop-color="#0a0e1c" />
+    </linearGradient>
+    <radialGradient id="glow1" cx="0.15" cy="0.05" r="0.5">
+      <stop offset="0%" stop-color="rgba(96,165,250,0.28)" />
+      <stop offset="100%" stop-color="rgba(0,0,0,0)" />
+    </radialGradient>
+    <radialGradient id="glow2" cx="0.9" cy="0.1" r="0.4">
+      <stop offset="0%" stop-color="rgba(52,211,153,0.24)" />
+      <stop offset="100%" stop-color="rgba(0,0,0,0)" />
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)" />
+  <rect width="512" height="512" fill="url(#glow1)" />
+  <rect width="512" height="512" fill="url(#glow2)" />
+
+  <g transform="translate(36 36)">
+    <rect x="0" y="0" width="440" height="440" rx="18" fill="rgba(14,19,36,0.78)" stroke="rgba(231,236,255,0.14)" stroke-width="2"/>
+    <text x="32" y="60" fill="#e5e7eb" font-family="sans-serif" font-size="28" font-weight="700">Exercise</text>
+    <text x="32" y="92" fill="#9ca3af" font-family="sans-serif" font-size="18">preview</text>
+    <text x="32" y="404" fill="#6b7280" font-family="sans-serif" font-size="18">Tap to view: technique preview</text>
+  </g>
+
+  <g transform="translate(256 260)">
+    <g>
+      <circle r="34" fill="#6ee7b7">
+        <animate attributeName="r" values="32;38;32" dur="1.2s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="1.2s" repeatCount="indefinite" />
+      </circle>
+      <circle r="16" fill="#0f172a" />
+    </g>
+    <g stroke="#34d399" stroke-width="6" stroke-linecap="round">
+      <path d="M -80 0 L 80 0">
+        <animate attributeName="d" values="M -70 0 L 70 0; M -80 0 L 80 0; M -70 0 L 70 0" dur="1.2s" repeatCount="indefinite"/>
+      </path>
+      <path d="M 0 -80 L 0 80">
+        <animate attributeName="d" values="M 0 -70 L 0 70; M 0 -80 L 0 80; M 0 -70 L 0 70" dur="1.2s" repeatCount="indefinite"/>
+      </path>
+    </g>
+  </g>
+</svg>

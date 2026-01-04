@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { Calendar, ChevronRight, X, Check } from 'lucide-react'
 import { useAppStore } from '../store/StoreContext'
 import { Card, CardContent } from '../components/Card'
@@ -18,7 +17,7 @@ const DAYS = [
 ]
 
 export const Schedule = () => {
-  const { templates, weeklySchedule, setDayTemplate } = useAppStore()
+  const { templates, weeklySchedule, setDayTemplate, applyDefaultSchedule } = useAppStore()
   const [selectedDay, setSelectedDay] = useState(null)
   const [showPicker, setShowPicker] = useState(false)
 
@@ -50,7 +49,12 @@ export const Schedule = () => {
     <div className={styles.page}>
       <header className={styles.header}>
         <h1 className={styles.title}>Weekly Schedule</h1>
-        <div className={styles.subtitle}>Plan your workout week</div>
+        <div className={styles.headerActions}>
+          <div className={styles.subtitle}>Plan your workout week</div>
+          <Button size="sm" variant="secondary" onClick={applyDefaultSchedule}>
+            Use default split
+          </Button>
+        </div>
       </header>
 
       <div className={styles.calendar}>
@@ -149,7 +153,7 @@ export const Schedule = () => {
                     )}
                   </span>
                   <span className={styles.templateOptionDesc}>
-                    {template.exercises.length} exercises · {template.description || 'Custom workout'}
+                    {template.exercises.length} exercises - {template.description || 'Custom workout'}
                   </span>
                 </div>
                 {isSelected && (

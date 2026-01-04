@@ -5,12 +5,27 @@ import { getExerciseById, findExerciseByName } from '../services/exerciseDb'
 import { useAppStore } from '../store/StoreContext'
 import { ExerciseGif } from './ExerciseGif'
 import { Button } from './Button'
+import { previewMap } from '../data/previewMap'
 import styles from './ExerciseDetailModal.module.css'
 
 export const ExerciseDetailModal = ({ isOpen, onClose, exerciseName, exerciseId, exerciseData: providedData }) => {
   const { exercises, getExercise } = useAppStore()
   const [exerciseData, setExerciseData] = useState(providedData || null)
   const [loading, setLoading] = useState(false)
+
+  const slugify = (name = '') =>
+    name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+
+  const guessPoseSlugs = (name = '') => {
+    const n = name.toLowerCase()
+    if (n.includes('bench')) return ['bench-press']
+    if (n.includes('squat')) return ['back-squat']
+    if (n.includes('deadlift')) return ['deadlift']
+    if (n.includes('pulldown') || n.includes('pull down')) return ['lat-pulldown']
+    if (n.includes('press')) return ['shoulder-press']
+    if (n.includes('row')) return ['seated-cable-row']
+    return []
+  }
 
   useEffect(() => {
     if (isOpen && (exerciseId || exerciseName) && !providedData) {
@@ -98,6 +113,17 @@ export const ExerciseDetailModal = ({ isOpen, onClose, exerciseName, exerciseId,
             <div className={styles.gifSection}>
               <ExerciseGif 
                 gifUrl={exerciseData.gifUrl}
+                altSources={[
+                  previewMap[exerciseData.id],
+                  previewMap[slugify(exerciseData.name)],
+                  `/previews/${exerciseData.id}.gif`,
+                  `/previews/${exerciseData.id}.png`,
+                  `/previews/${slugify(exerciseData.name)}.gif`,
+                  `/previews/${slugify(exerciseData.name)}.png`,
+                  ...guessPoseSlugs(exerciseData.name).map(slug => `/previews/${slug}.gif`),
+                  previewMap[exerciseData.category],
+                  '/previews/generic.svg',
+                ]}
                 name={exerciseData.name}
                 category={exerciseData.category}
                 equipment={exerciseData.equipment}

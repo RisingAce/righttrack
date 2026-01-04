@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Play, Square, Check, RefreshCw, ChevronRight, 
-  Timer, Flame, ArrowLeft, X, Repeat, Info
+  Timer, Flame, ArrowLeft, X, Repeat, Info, AlertTriangle
 } from 'lucide-react'
 import { useAppStore } from '../store/StoreContext'
 import { findExerciseByName } from '../services/exerciseDb'
+import { previewMap } from '../data/previewMap'
 import { Button } from '../components/Button'
 import { Card, CardContent } from '../components/Card'
 import { Modal } from '../components/Modal'
@@ -27,50 +28,72 @@ export const Workout = () => {
     finishWorkout,
     cancelWorkout,
     getExercise,
-    getAlternatives
+    getAlternatives,
+    updateSetValue,
+    updateExerciseNote,
   } = useAppStore()
 
   const [showTemplates, setShowTemplates] = useState(!currentWorkout)
   const [activeExercise, setActiveExercise] = useState(0)
-  const [showAlternatives, setShowAlternatives] = useState(false)
-  const [showFinishConfirm, setShowFinishConfirm] = useState(false)
-  const [showDetailModal, setShowDetailModal] = useState(false)
-  const [exerciseGifs, setExerciseGifs] = useState({})
+const [showAlternatives, setShowAlternatives] = useState(false)
+const [showFinishConfirm, setShowFinishConfirm] = useState(false)
+const [showDetailModal, setShowDetailModal] = useState(false)
+const [exerciseGifs, setExerciseGifs] = useState({})
+const [autoStartError, setAutoStartError] = useState(null)
+const startIdRef = useRef(location.state?.startTemplateId || null)
+const fetchCountRef = useRef(0)
+const gifCacheRef = useRef(null)
+
+const GIF_CACHE_KEY = 'rt_gif_cache'
+const cdnGifUrl = (id) => `https://v2.exercisedb.io/image/${id}.gif`
+const cdnLegacyUrl = (tokenOrId) => `https://v2.exercisedb.io/api/v1/image/${tokenOrId}`
+const slugify = (name) =>
+  name
+    ?.toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+
+const guessPoseSlugs = (name = '') => {
+  const n = name.toLowerCase()
+  if (n.includes('bench')) return ['bench-press']
+  if (n.includes('squat')) return ['back-squat']
+  if (n.includes('deadlift')) return ['deadlift']
+  if (n.includes('pulldown') || n.includes('pull down')) return ['lat-pulldown']
+  if (n.includes('press')) return ['shoulder-press']
+  if (n.includes('row')) return ['seated-cable-row']
+  return []
+}
 
   // Handle starting workout from navigation state (e.g., from home page)
   useEffect(() => {
-    if (location.state?.startTemplateId && !currentWorkout) {
-      startWorkout(location.state.startTemplateId)
+    if (!startIdRef.current || currentWorkout) return
+
+    const workout = startWorkout(startIdRef.current)
+    if (workout) {
       setShowTemplates(false)
-      // Clear the location state so it doesn't start again on refresh
-      window.history.replaceState({}, document.title)
+      setAutoStartError(null)
+    } else {
+      setAutoStartError('Scheduled workout template is missing. Pick another template.')
+      setShowTemplates(true)
     }
-  }, [location.state, startWorkout, currentWorkout])
+    startIdRef.current = null
+    // Clear the location state so it doesn't start again on refresh
+    window.history.replaceState({}, document.title)
+  }, [startWorkout, currentWorkout])
 
   const handleStartWorkout = (templateId) => {
     startWorkout(templateId)
     setShowTemplates(false)
   }
 
-  // Load exercise GIFs when workout starts
-  useEffect(() => {
-    if (currentWorkout && currentWorkout.exercises) {
-      currentWorkout.exercises.forEach(async (ex) => {
-        const data = await findExerciseByName(ex.exerciseName)
-        if (data && data.gifUrl) {
-          setExerciseGifs(prev => ({
-            ...prev,
-            [ex.exerciseId]: data.gifUrl
-          }))
-        }
-      })
-    }
-  }, [currentWorkout])
-
   const handleCompleteSet = (exerciseIndex, setIndex) => {
     const exercise = currentWorkout.exercises[exerciseIndex]
     const set = exercise.sets[setIndex]
     completeSet(exerciseIndex, setIndex, set.reps, set.weight)
+  }
+
+  const handleUpdateSet = (exerciseIndex, setIndex, field, value) => {
+    updateSetValue(exerciseIndex, setIndex, field, value)
   }
 
   const handleSwapExercise = (newExerciseId) => {
@@ -104,6 +127,94 @@ export const Workout = () => {
   }
 
   const progress = getProgress()
+  const hasExercises = currentWorkout?.exercises?.length > 0
+
+  useEffect(() => {
+    if (currentWorkout && activeExercise >= (currentWorkout.exercises?.length || 0)) {
+      setActiveExercise(0)
+    }
+  }, [currentWorkout, activeExercise])
+
+  // If a workout just became available and we came from a scheduled start, hide templates view
+  useEffect(() => {
+    if (currentWorkout && showTemplates) {
+      setShowTemplates(false)
+    }
+  }, [currentWorkout, showTemplates])
+
+  // Load exercise GIFs with cache-first, CDN fallback, and API rate limiting
+  useEffect(() => {
+    if (!currentWorkout?.exercises) return
+
+    if (!gifCacheRef.current) {
+      try {
+        gifCacheRef.current = JSON.parse(localStorage.getItem(GIF_CACHE_KEY) || '{}')
+      } catch {
+        gifCacheRef.current = {}
+      }
+    }
+
+    const loadGifs = async () => {
+      for (const ex of currentWorkout.exercises) {
+        const exerciseData = getExercise(ex.exerciseId)
+        const cachedGif = gifCacheRef.current?.[ex.exerciseId]
+        const localGif = exerciseData?.gifUrl
+
+        if (cachedGif || localGif) {
+          const gifUrl = cachedGif || localGif
+          setExerciseGifs(prev => ({ ...prev, [ex.exerciseId]: gifUrl }))
+          if (!cachedGif) {
+            gifCacheRef.current[ex.exerciseId] = gifUrl
+            localStorage.setItem(GIF_CACHE_KEY, JSON.stringify(gifCacheRef.current))
+          }
+          continue
+        }
+
+        if (fetchCountRef.current >= 2) {
+          continue
+        }
+
+        try {
+          fetchCountRef.current += 1
+
+          // Try free CDN first
+          const cdnUrl = cdnGifUrl(ex.exerciseId)
+          const cdnResp = await fetch(cdnUrl, { method: 'HEAD' })
+          if (cdnResp.ok) {
+            setExerciseGifs(prev => ({ ...prev, [ex.exerciseId]: cdnUrl }))
+            gifCacheRef.current[ex.exerciseId] = cdnUrl
+            localStorage.setItem(GIF_CACHE_KEY, JSON.stringify(gifCacheRef.current))
+            continue
+          }
+
+          // Try legacy token-based URL if we have one on record
+          const legacyToken = exerciseData?.gifUrl ? exerciseData.gifUrl.split('/').pop() : null
+          if (legacyToken) {
+            const legacyUrl = cdnLegacyUrl(legacyToken)
+            const legacyResp = await fetch(legacyUrl, { method: 'HEAD' })
+            if (legacyResp.ok) {
+              setExerciseGifs(prev => ({ ...prev, [ex.exerciseId]: legacyUrl }))
+              gifCacheRef.current[ex.exerciseId] = legacyUrl
+              localStorage.setItem(GIF_CACHE_KEY, JSON.stringify(gifCacheRef.current))
+              continue
+            }
+          }
+
+          // Fallback to API lookup (rate-limited)
+          const result = await findExerciseByName(ex.exerciseName)
+          if (result?.gifUrl) {
+            setExerciseGifs(prev => ({ ...prev, [ex.exerciseId]: result.gifUrl }))
+            gifCacheRef.current[ex.exerciseId] = result.gifUrl
+            localStorage.setItem(GIF_CACHE_KEY, JSON.stringify(gifCacheRef.current))
+          }
+        } catch (err) {
+          console.warn('GIF lookup failed for', ex.exerciseName, err)
+        }
+      }
+    }
+
+    loadGifs()
+  }, [currentWorkout, getExercise])
 
   // Template selection view
   if (!currentWorkout || showTemplates) {
@@ -112,6 +223,13 @@ export const Workout = () => {
         <header className={styles.header}>
           <h1 className={styles.title}>Start Workout</h1>
         </header>
+
+        {autoStartError && (
+          <div className={styles.errorBanner}>
+            <AlertTriangle size={16} />
+            <span>{autoStartError}</span>
+          </div>
+        )}
 
         {templates.length === 0 ? (
           <Card>
@@ -157,6 +275,40 @@ export const Workout = () => {
   const currentEx = currentWorkout.exercises[activeExercise]
   const exerciseData = getExercise(currentEx.exerciseId)
   const alternatives = getAlternatives(currentEx.exerciseId)
+  const exerciseNote = currentEx.note || ''
+
+  if (!hasExercises) {
+    return (
+      <div className={styles.page}>
+        <header className={styles.workoutHeader}>
+          <button className={styles.backBtn} onClick={() => setShowTemplates(true)}>
+            <ArrowLeft size={20} />
+          </button>
+          <div className={styles.workoutInfo}>
+            <h1 className={styles.workoutTitle}>{currentWorkout?.templateName || 'Workout'}</h1>
+            <span className={styles.progressText}>No exercises in this template</span>
+          </div>
+          <button className={styles.cancelBtn} onClick={handleCancel}>
+            <X size={20} />
+          </button>
+        </header>
+
+        <Card>
+          <CardContent className={styles.emptyState}>
+            <div className={styles.emptyIcon}>
+              <AlertTriangle size={32} />
+            </div>
+            <h3>No exercises to show</h3>
+            <p>Add exercises to this template or pick a different workout.</p>
+            <Button onClick={() => setShowTemplates(true)}>Choose Template</Button>
+            <Button variant="secondary" onClick={() => navigate('/templates')}>
+              Edit Templates
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
 
   return (
     <div className={styles.page}>
@@ -234,10 +386,23 @@ export const Workout = () => {
           </div>
         </div>
 
-        {(exerciseGifs[currentEx.exerciseId] || exerciseData) && (
+        {(exerciseGifs[currentEx.exerciseId] || exerciseData?.gifUrl) && (
           <div className={styles.gifPreview}>
             <ExerciseGif 
               gifUrl={exerciseGifs[currentEx.exerciseId] || exerciseData?.gifUrl}
+              altSources={[
+                previewMap[currentEx.exerciseId],
+                previewMap[slugify(currentEx.exerciseName || '')],
+                `/previews/${currentEx.exerciseId}.gif`,
+                `/previews/${currentEx.exerciseId}.png`,
+                `/previews/${slugify(currentEx.exerciseName || '')}.gif`,
+                `/previews/${slugify(currentEx.exerciseName || '')}.png`,
+                ...guessPoseSlugs(currentEx.exerciseName).map(slug => `/previews/${slug}.gif`),
+                previewMap[exerciseData?.category],
+                '/previews/generic.svg',
+                cdnGifUrl(currentEx.exerciseId),
+                exerciseData?.gifUrl ? cdnLegacyUrl(exerciseData.gifUrl.split('/').pop()) : null,
+              ]}
               name={currentEx.exerciseName}
               category={exerciseData?.category}
               equipment={exerciseData?.equipment}
@@ -263,9 +428,16 @@ export const Workout = () => {
             >
               <span className={styles.setNum}>{setIdx + 1}</span>
               <span className={styles.setTarget}>{set.reps} reps</span>
-              <span className={styles.setWeight}>
-                {set.weight > 0 ? `${set.weight} kg` : 'BW'}
-              </span>
+              <div className={styles.setWeight}>
+                <input
+                  type="number"
+                  min="0"
+                  step="0.5"
+                  value={set.weight}
+                  onChange={(e) => handleUpdateSet(activeExercise, setIdx, 'weight', parseFloat(e.target.value) || 0)}
+                />
+                <span className={styles.weightUnit}>kg</span>
+              </div>
               <button
                 className={`${styles.setBtn} ${set.completed ? styles.done : ''}`}
                 onClick={() => !set.completed && handleCompleteSet(activeExercise, setIdx)}
@@ -277,6 +449,18 @@ export const Workout = () => {
           ))}
         </div>
       </motion.div>
+
+      <div className={styles.notesCard}>
+        <div className={styles.notesHeader}>
+          <span>Notes & modifications</span>
+          <span className={styles.notesHint}>Optional</span>
+        </div>
+        <textarea
+          value={exerciseNote}
+          onChange={(e) => updateExerciseNote(activeExercise, e.target.value)}
+          placeholder="Record form cues, equipment changes, or weights used..."
+        />
+      </div>
 
       <div className={styles.workoutActions}>
         {activeExercise < currentWorkout.exercises.length - 1 ? (
@@ -318,6 +502,19 @@ export const Workout = () => {
               {(exerciseGifs[alt.id] || alt.gifUrl) && (
                 <ExerciseGif 
                   gifUrl={exerciseGifs[alt.id] || alt.gifUrl}
+                  altSources={[
+                    previewMap[alt.id],
+                    previewMap[slugify(alt.name || '')],
+                    `/previews/${alt.id}.gif`,
+                    `/previews/${alt.id}.png`,
+                    `/previews/${slugify(alt.name || '')}.gif`,
+                    `/previews/${slugify(alt.name || '')}.png`,
+                    ...guessPoseSlugs(alt.name).map(slug => `/previews/${slug}.gif`),
+                    previewMap[alt.category],
+                    '/previews/generic.svg',
+                    cdnGifUrl(alt.id),
+                    alt.gifUrl ? cdnLegacyUrl(alt.gifUrl.split('/').pop()) : null,
+                  ]}
                   name={alt.name}
                   category={alt.category}
                   equipment={alt.equipment}

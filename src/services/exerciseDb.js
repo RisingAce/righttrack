@@ -2,6 +2,7 @@
 const API_KEY = import.meta.env.VITE_RAPIDAPI_KEY
 const API_HOST = 'exercisedb.p.rapidapi.com'
 const BASE_URL = `https://${API_HOST}`
+const hasApiKey = Boolean(API_KEY)
 
 const DB_NAME = 'righttrack_exercise_cache'
 const DB_VERSION = 1
@@ -10,6 +11,10 @@ const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000 // 7 days
 
 // Initialize IndexedDB
 const initDB = () => {
+  if (typeof indexedDB === 'undefined') {
+    return Promise.reject(new Error('IndexedDB is not available in this environment'))
+  }
+
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION)
     
@@ -117,6 +122,13 @@ const getAllFromCache = async () => {
 
 // Make API request with headers
 const fetchFromAPI = async (endpoint) => {
+  if (!hasApiKey) {
+    throw new Error('Missing VITE_RAPIDAPI_KEY for ExerciseDB requests')
+  }
+  if (typeof navigator !== 'undefined' && !navigator.onLine) {
+    throw new Error('Offline - using cached exercises')
+  }
+
   const response = await fetch(`${BASE_URL}${endpoint}`, {
     method: 'GET',
     headers: {
@@ -137,13 +149,13 @@ export const getExerciseById = async (id) => {
   // Try cache first
   const cached = await getFromCache(id)
   if (cached) {
-    console.log('📦 Exercise from cache:', id)
+    console.log('[cache] Exercise from cache:', id)
     return cached
   }
   
   // Fetch from API
   try {
-    console.log('🌐 Fetching exercise from API:', id)
+    console.log('[network] Fetching exercise from API:', id)
     const data = await fetchFromAPI(`/exercises/exercise/${id}`)
     await saveToCache(data)
     return data
@@ -232,6 +244,11 @@ export const findExerciseByName = async (name) => {
 // Prefetch common exercises for offline use
 export const prefetchCommonExercises = async () => {
   const commonBodyParts = ['chest', 'back', 'shoulders', 'upper legs', 'upper arms']
+
+  if (!hasApiKey || (typeof navigator !== 'undefined' && !navigator.onLine)) {
+    console.log('[prefetch] Skipped - offline or missing API key')
+    return
+  }
   
   try {
     for (const part of commonBodyParts) {
@@ -239,7 +256,7 @@ export const prefetchCommonExercises = async () => {
       // Small delay to avoid rate limiting
       await new Promise(resolve => setTimeout(resolve, 200))
     }
-    console.log('✅ Prefetch complete')
+    console.log('[prefetch] Prefetch complete')
   } catch (error) {
     console.error('Prefetch error:', error)
   }

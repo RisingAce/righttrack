@@ -178,10 +178,17 @@ export const Profile = () => {
             and never miss a workout even when equipment is busy.
           </p>
           <div className={styles.aboutFeatures}>
-            <span>✓ Workout Templates</span>
-            <span>✓ Exercise Alternatives</span>
-            <span>✓ Progress Tracking</span>
-            <span>✓ Works Offline</span>
+            {[
+              'Workout Templates',
+              'Exercise Alternatives',
+              'Progress Tracking',
+              'Works Offline',
+            ].map((label) => (
+              <span key={label}>
+                <Check size={14} />
+                {label}
+              </span>
+            ))}
           </div>
         </div>
       </Modal>

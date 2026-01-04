@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { Search, Dumbbell, Target, Cable, User, Cog, Info } from 'lucide-react'
+import { Search, Dumbbell, Target, User, Cog, Info, Check } from 'lucide-react'
 import { useAppStore } from '../store/StoreContext'
 import { Input } from './Input'
 import { ExerciseGif } from './ExerciseGif'
@@ -126,7 +126,9 @@ export const ExercisePicker = ({ onSelect, selectedIds = [] }) => {
                       <Info size={16} />
                     </button>
                     {isSelected && (
-                      <div className={styles.checkmark}>✓</div>
+                      <div className={styles.checkmark}>
+                        <Check size={14} />
+                      </div>
                     )}
                   </motion.div>
                 )

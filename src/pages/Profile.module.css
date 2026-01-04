@@ -224,6 +224,9 @@
 }
 
 .aboutFeatures span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
   padding: var(--spacing-xs) var(--spacing-sm);
   background: var(--color-accent-soft);
   color: var(--color-accent-primary);

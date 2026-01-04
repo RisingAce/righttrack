@@ -2,6 +2,8 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Home, Dumbbell, Calendar, BarChart3, User, Plus } from 'lucide-react'
 import styles from './Layout.module.css'
+import { usePwaRegistration } from '../hooks/usePwaRegistration'
+import { PwaToast } from './PwaToast'
 
 const navItems = [
   { path: '/', icon: Home, label: 'Home' },
@@ -11,9 +13,10 @@ const navItems = [
   { path: '/profile', icon: User, label: 'Profile' },
 ]
 
-export const Layout = ({ children }) => {
+export const Layout = ({ children, cacheStatus }) => {
   const location = useLocation()
   const navigate = useNavigate()
+  const { offlineReady, needsRefresh, refreshApp, dismiss } = usePwaRegistration()
 
   const handleCreateTemplate = () => {
     navigate('/templates', { state: { openCreate: true } })
@@ -21,6 +24,13 @@ export const Layout = ({ children }) => {
 
   return (
     <div className={styles.layout}>
+      <PwaToast
+        offlineReady={offlineReady}
+        needsRefresh={needsRefresh}
+        onRefresh={refreshApp}
+        onDismiss={dismiss}
+        cacheStatus={cacheStatus}
+      />
       <main className={styles.main}>
         <AnimatePresence mode="wait">
           <motion.div

@@ -28,6 +28,23 @@ const defaultWeeklySchedule = {
   sunday: null,
 }
 
+const buildDefaultSchedule = (templates) => {
+  const byName = templates.reduce((acc, t) => {
+    acc[t.name.toLowerCase()] = t.id
+    return acc
+  }, {})
+
+  return {
+    monday: byName['chest & shoulders split'] || null,
+    tuesday: byName['back strength'] || null,
+    wednesday: byName['legs & arms'] || null,
+    thursday: byName['push power'] || null,
+    friday: byName['back & biceps volume'] || null,
+    saturday: byName['upper power'] || null,
+    sunday: null,
+  }
+}
+
 // Initialize default templates with IDs
 const initializeDefaultTemplates = () => {
   return prebuiltTemplates.map(template => ({
@@ -38,18 +55,34 @@ const initializeDefaultTemplates = () => {
   }))
 }
 
+// Ensure any newly added default templates are present for existing users
+const ensureDefaultTemplates = (existing = []) => {
+  const nameSet = new Set(existing.map(t => t.name.toLowerCase()))
+  const missing = prebuiltTemplates
+    .filter(t => !nameSet.has(t.name.toLowerCase()))
+    .map(t => ({
+      ...t,
+      id: uuidv4(),
+      createdAt: new Date().toISOString(),
+      isDefault: true,
+    }))
+  return [...existing, ...missing]
+}
+
 const getInitialData = () => {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) {
       const data = JSON.parse(stored)
+      data.templates = ensureDefaultTemplates(data.templates || [])
       // Add weekly schedule if it doesn't exist (for existing users)
       if (!data.weeklySchedule) {
-        data.weeklySchedule = defaultWeeklySchedule
+        data.weeklySchedule = buildDefaultSchedule(data.templates)
       }
       // Add default templates if user has no templates
       if (!data.templates || data.templates.length === 0) {
         data.templates = initializeDefaultTemplates()
+        data.weeklySchedule = buildDefaultSchedule(data.templates)
       }
       return data
     }
@@ -57,13 +90,16 @@ const getInitialData = () => {
     console.error('Failed to load data from localStorage:', e)
   }
   
+  const templates = initializeDefaultTemplates()
+  const weeklySchedule = buildDefaultSchedule(templates)
+
   return {
     user: defaultUser,
     exercises: defaultExercises,
-    templates: initializeDefaultTemplates(),
+    templates,
     workoutLogs: [],
     currentWorkout: null,
-    weeklySchedule: defaultWeeklySchedule,
+    weeklySchedule,
   }
 }
 
@@ -183,6 +219,44 @@ export const useStore = () => {
     })
   }, [])
 
+  const updateSetValue = useCallback((exerciseIndex, setIndex, field, value) => {
+    setData(prev => {
+      if (!prev.currentWorkout) return prev
+      const updatedExercises = [...prev.currentWorkout.exercises]
+      const exercise = { ...updatedExercises[exerciseIndex] }
+      const sets = [...exercise.sets]
+      sets[setIndex] = { ...sets[setIndex], [field]: value }
+      exercise.sets = sets
+      updatedExercises[exerciseIndex] = exercise
+
+      return {
+        ...prev,
+        currentWorkout: {
+          ...prev.currentWorkout,
+          exercises: updatedExercises
+        }
+      }
+    })
+  }, [])
+
+  const updateExerciseNote = useCallback((exerciseIndex, note) => {
+    setData(prev => {
+      if (!prev.currentWorkout) return prev
+      const updatedExercises = [...prev.currentWorkout.exercises]
+      updatedExercises[exerciseIndex] = {
+        ...updatedExercises[exerciseIndex],
+        note,
+      }
+      return {
+        ...prev,
+        currentWorkout: {
+          ...prev.currentWorkout,
+          exercises: updatedExercises,
+        }
+      }
+    })
+  }, [])
+
   const swapExercise = useCallback((exerciseIndex, newExerciseId) => {
     setData(prev => {
       if (!prev.currentWorkout) return prev
@@ -288,6 +362,17 @@ export const useStore = () => {
     return data.templates.find(t => t.id === templateId)
   }, [data.weeklySchedule, data.templates])
 
+  const applyDefaultSchedule = useCallback(() => {
+    setData(prev => {
+      const mergedTemplates = ensureDefaultTemplates(prev.templates)
+      return {
+        ...prev,
+        templates: mergedTemplates,
+        weeklySchedule: buildDefaultSchedule(mergedTemplates)
+      }
+    })
+  }, [])
+
   return {
     user: data.user,
     exercises: data.exercises,
@@ -307,9 +392,12 @@ export const useStore = () => {
     cancelWorkout,
     getExercise,
     getAlternatives,
+    updateSetValue,
+    updateExerciseNote,
     getWorkoutStats,
     setDayTemplate,
     getTodayTemplate,
+    applyDefaultSchedule,
   }
 }
 

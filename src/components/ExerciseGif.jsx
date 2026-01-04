@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Loader2, Dumbbell } from 'lucide-react'
 import { getFallbackIcon } from '../assets/exercise-fallbacks'
@@ -11,15 +11,30 @@ export const ExerciseGif = ({
   equipment,
   size = 'md',
   showName = false,
-  className = '' 
+  className = '',
+  altSources = [],
 }) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [imageSrc, setImageSrc] = useState(null)
   const [useFallback, setUseFallback] = useState(false)
 
+  const sourcesKey = useMemo(() => `${gifUrl || ''}|${JSON.stringify(altSources || [])}`, [gifUrl, altSources])
+  const sources = useMemo(() => [gifUrl, ...(altSources || [])].filter(Boolean), [sourcesKey])
+  const [sourceIndex, setSourceIndex] = useState(0)
+
   useEffect(() => {
-    if (!gifUrl) {
+    if (!sources.length) {
+      setError(true)
+      setLoading(false)
+      return
+    }
+    setUseFallback(false)
+    setSourceIndex(0)
+  }, [sourcesKey, sources.length])
+
+  useEffect(() => {
+    if (!sources.length) {
       setError(true)
       setLoading(false)
       return
@@ -30,23 +45,30 @@ export const ExerciseGif = ({
 
     // Preload image
     const img = new Image()
-    img.src = gifUrl
+    img.referrerPolicy = 'no-referrer'
+    img.crossOrigin = 'anonymous'
+    img.src = sources[sourceIndex] || ''
     
     img.onload = () => {
-      setImageSrc(gifUrl)
+      setImageSrc(sources[sourceIndex])
       setLoading(false)
     }
     
     img.onerror = () => {
-      // Try fallback icon instead of showing error
-      const fallbackSrc = getFallbackIcon(category, equipment)
-      if (fallbackSrc && !useFallback) {
-        setUseFallback(true)
-        setImageSrc(fallbackSrc)
-        setLoading(false)
+      const nextIndex = sourceIndex + 1
+      if (nextIndex < sources.length) {
+        setSourceIndex(nextIndex)
       } else {
-        setError(true)
-        setLoading(false)
+        // Try fallback icon instead of showing error
+        const fallbackSrc = getFallbackIcon(category, equipment)
+        if (fallbackSrc && !useFallback) {
+          setUseFallback(true)
+          setImageSrc(fallbackSrc)
+          setLoading(false)
+        } else {
+          setError(true)
+          setLoading(false)
+        }
       }
     }
 
@@ -54,7 +76,7 @@ export const ExerciseGif = ({
       img.onload = null
       img.onerror = null
     }
-  }, [gifUrl, category, equipment, useFallback])
+  }, [sourcesKey, sources, sourceIndex, category, equipment, useFallback])
 
   return (
     <div className={`${styles.container} ${styles[size]} ${className}`}>
