@@ -1,6 +1,6 @@
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, Dumbbell, Calendar, BarChart3, User } from 'lucide-react'
+import { Home, Dumbbell, Calendar, BarChart3, User, Plus } from 'lucide-react'
 import styles from './Layout.module.css'
 
 const navItems = [
@@ -13,6 +13,11 @@ const navItems = [
 
 export const Layout = ({ children }) => {
   const location = useLocation()
+  const navigate = useNavigate()
+
+  const handleCreateTemplate = () => {
+    navigate('/templates', { state: { openCreate: true } })
+  }
 
   return (
     <div className={styles.layout}>
@@ -33,7 +38,40 @@ export const Layout = ({ children }) => {
 
       <nav className={styles.nav}>
         <div className={styles.navInner}>
-          {navItems.map(({ path, icon: Icon, label }) => (
+          {navItems.slice(0, 2).map(({ path, icon: Icon, label }) => (
+            <NavLink
+              key={path}
+              to={path}
+              className={({ isActive }) =>
+                `${styles.navItem} ${isActive ? styles.active : ''}`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  {isActive && (
+                    <motion.div
+                      layoutId="navIndicator"
+                      className={styles.navIndicator}
+                      transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                    />
+                  )}
+                  <Icon className={styles.navIcon} size={22} strokeWidth={isActive ? 2.5 : 2} />
+                  <span className={styles.navLabel}>{label}</span>
+                </>
+              )}
+            </NavLink>
+          ))}
+          
+          <motion.button
+            className={styles.createBtn}
+            onClick={handleCreateTemplate}
+            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.05 }}
+          >
+            <Plus size={28} strokeWidth={3} />
+          </motion.button>
+
+          {navItems.slice(2).map(({ path, icon: Icon, label }) => (
             <NavLink
               key={path}
               to={path}

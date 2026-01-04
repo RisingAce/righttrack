@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Edit3, Trash2, GripVertical, X, Save, ChevronDown, ChevronUp } from 'lucide-react'
 import { useAppStore } from '../store/StoreContext'
@@ -10,11 +11,21 @@ import { ExercisePicker } from '../components/ExercisePicker'
 import styles from './Templates.module.css'
 
 export const Templates = () => {
+  const location = useLocation()
   const { templates, exercises, createTemplate, updateTemplate, deleteTemplate, getExercise } = useAppStore()
   const [isCreating, setIsCreating] = useState(false)
   const [editingId, setEditingId] = useState(null)
   const [showPicker, setShowPicker] = useState(false)
   const [expandedId, setExpandedId] = useState(null)
+
+  // Auto-open create modal if navigated from plus button
+  useEffect(() => {
+    if (location.state?.openCreate) {
+      setIsCreating(true)
+      // Clear the state so it doesn't reopen on refresh
+      window.history.replaceState({}, document.title)
+    }
+  }, [location])
 
   const [form, setForm] = useState({
     name: '',
