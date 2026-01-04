@@ -1,0 +1,331 @@
+.page {
+  padding: var(--spacing-lg);
+  padding-top: calc(var(--spacing-xl) + env(safe-area-inset-top));
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-2xl) var(--spacing-md);
+}
+
+.emptyIcon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-xl);
+  color: var(--color-text-muted);
+}
+
+.emptyState h3 {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  color: var(--color-text-primary);
+}
+
+.emptyState p {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  max-width: 280px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.templateCard {
+  overflow: hidden;
+}
+
+.templateHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+}
+
+.expandBtn {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  color: var(--color-text-secondary);
+}
+
+.templateName {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.templateMeta {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.templateActions {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.actionBtn {
+  padding: var(--spacing-sm);
+  color: var(--color-text-muted);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.actionBtn:hover {
+  background: var(--color-bg-elevated);
+  color: var(--color-text-primary);
+}
+
+.exerciseList {
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  overflow: hidden;
+}
+
+.exercisePreview {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm);
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-sm);
+}
+
+.exerciseIndex {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-hover);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.exerciseInfo {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.exerciseNameSmall {
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+}
+
+.exerciseSets {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+/* Form Styles */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.formSectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.formSectionHeader h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.noExercises {
+  padding: var(--spacing-xl);
+  text-align: center;
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+}
+
+.formExercises {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.formExercise {
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.formExerciseHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.formExerciseInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.grip {
+  color: var(--color-text-muted);
+  cursor: grab;
+}
+
+.formExerciseName {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.removeBtn {
+  padding: var(--spacing-xs);
+  color: var(--color-text-muted);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.removeBtn:hover {
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--color-danger);
+}
+
+.setsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.setHeader {
+  display: grid;
+  grid-template-columns: 40px 1fr 1fr 30px;
+  gap: var(--spacing-sm);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  padding: 0 var(--spacing-xs);
+}
+
+.setRow {
+  display: grid;
+  grid-template-columns: 40px 1fr 1fr 30px;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+.setNum {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-hover);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.setInput {
+  width: 100%;
+  padding: var(--spacing-sm);
+  background: var(--color-bg-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.setInput:focus {
+  outline: none;
+  border-color: var(--color-accent-primary);
+}
+
+.removeSetBtn {
+  padding: var(--spacing-xs);
+  color: var(--color-text-muted);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.removeSetBtn:hover:not(:disabled) {
+  color: var(--color-danger);
+}
+
+.removeSetBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.addSetBtn {
+  width: 100%;
+  padding: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+  background: transparent;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  transition: all var(--transition-fast);
+}
+
+.addSetBtn:hover {
+  border-color: var(--color-accent-primary);
+  color: var(--color-accent-primary);
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-md);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}

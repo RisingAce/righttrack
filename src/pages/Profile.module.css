@@ -1,0 +1,233 @@
+.page {
+  padding: var(--spacing-lg);
+  padding-top: calc(var(--spacing-xl) + env(safe-area-inset-top));
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.infoBtn {
+  padding: var(--spacing-sm);
+  color: var(--color-text-muted);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.infoBtn:hover {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+}
+
+.profileCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-xl);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
+  border-radius: 50%;
+  color: var(--color-bg-primary);
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.profileName {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.memberSince {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.editForm {
+  width: 100%;
+  max-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.editActions {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+}
+
+.statsSection,
+.actionsSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.sectionTitle {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  padding-left: var(--spacing-xs);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md);
+}
+
+.statCard {
+  text-align: center;
+}
+
+.statValue {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.actionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0 !important;
+}
+
+.actionItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  color: var(--color-text-secondary);
+  text-align: left;
+  transition: all var(--transition-fast);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.actionItem:last-child {
+  border-bottom: none;
+}
+
+.actionItem:hover {
+  background: var(--color-bg-elevated);
+  color: var(--color-text-primary);
+}
+
+.actionItem.danger:hover {
+  color: var(--color-danger);
+}
+
+.actionInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.actionName {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.actionItem.danger .actionName {
+  color: inherit;
+}
+
+.actionDesc {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+/* About Modal */
+.aboutContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing-md);
+}
+
+.aboutLogo {
+  margin-bottom: var(--spacing-sm);
+}
+
+.aboutIcon {
+  width: 64px;
+  height: 64px;
+}
+
+.aboutContent h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.aboutVersion {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.aboutDesc {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.aboutFeatures {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+.aboutFeatures span {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--color-accent-soft);
+  color: var(--color-accent-primary);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 500;
+}

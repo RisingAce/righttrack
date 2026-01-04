@@ -1,0 +1,445 @@
+.page {
+  padding: var(--spacing-lg);
+  padding-top: calc(var(--spacing-xl) + env(safe-area-inset-top));
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.subtitle {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-md);
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-2xl) var(--spacing-md);
+}
+
+.emptyIcon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-xl);
+  color: var(--color-accent-primary);
+}
+
+.emptyState h3 {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  color: var(--color-text-primary);
+}
+
+.emptyState p {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.templateList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.templateCard {
+  cursor: pointer;
+}
+
+.templateContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.templateInfo {
+  flex: 1;
+}
+
+.templateName {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.templateMeta {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.templateAction {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-md);
+  color: var(--color-accent-primary);
+}
+
+/* Active Workout Styles */
+.workoutHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.backBtn,
+.cancelBtn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.backBtn:hover,
+.cancelBtn:hover {
+  background: var(--color-bg-elevated);
+  color: var(--color-text-primary);
+}
+
+.workoutInfo {
+  flex: 1;
+}
+
+.workoutTitle {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: var(--spacing-xs);
+}
+
+.progressBar {
+  height: 4px;
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-bottom: var(--spacing-xs);
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-accent-primary), var(--color-accent-secondary));
+  border-radius: var(--radius-full);
+}
+
+.progressText {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+}
+
+.exerciseNav {
+  display: flex;
+  gap: var(--spacing-sm);
+  overflow-x: auto;
+  padding: var(--spacing-xs) 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.exerciseNav::-webkit-scrollbar {
+  display: none;
+}
+
+.exerciseTab {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-secondary);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.exerciseTab:hover {
+  background: var(--color-bg-elevated);
+}
+
+.exerciseTab.active {
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent-primary);
+  color: var(--color-accent-primary);
+}
+
+.exerciseTab.completed {
+  background: var(--color-accent-primary);
+  color: var(--color-bg-primary);
+}
+
+.exerciseTab.partial {
+  background: var(--color-bg-elevated);
+  border-color: var(--color-accent-primary);
+  color: var(--color-accent-primary);
+}
+
+.exerciseCard {
+  flex: 1;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.exerciseHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-lg);
+}
+
+.exerciseName {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.swappedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--color-info);
+  background: rgba(96, 165, 250, 0.15);
+  color: var(--color-info);
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.swapBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.swapBtn:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.setsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.setsHeader {
+  display: grid;
+  grid-template-columns: 40px 1fr 1fr 70px;
+  gap: var(--spacing-md);
+  padding: 0 var(--spacing-sm);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.setRow {
+  display: grid;
+  grid-template-columns: 40px 1fr 1fr 70px;
+  gap: var(--spacing-md);
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-sm);
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.setRow.setCompleted {
+  background: var(--color-accent-soft);
+}
+
+.setNum {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.setCompleted .setNum {
+  background: var(--color-accent-primary);
+  color: var(--color-bg-primary);
+}
+
+.setTarget {
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.setWeight {
+  color: var(--color-text-secondary);
+}
+
+.setBtn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-md);
+  color: var(--color-accent-primary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.setBtn:hover:not(:disabled) {
+  background: var(--color-accent-primary);
+  color: var(--color-bg-primary);
+}
+
+.setBtn.done {
+  background: var(--color-accent-primary);
+  color: var(--color-bg-primary);
+}
+
+.setBtn:disabled {
+  cursor: default;
+}
+
+.workoutActions {
+  margin-top: auto;
+  padding-top: var(--spacing-md);
+}
+
+/* Alternatives Modal */
+.alternativesList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.alternativesSubtitle {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+}
+
+.alternativeItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md);
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.alternativeItem:hover {
+  background: var(--color-bg-hover);
+}
+
+.alternativeInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.alternativeName {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.alternativeEquipment {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  text-transform: capitalize;
+}
+
+/* Finish Modal */
+.finishModal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing-lg);
+}
+
+.finishStats {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-xl);
+}
+
+.finishStat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.finishStatIcon {
+  color: var(--color-accent-primary);
+}
+
+.finishStatValue {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.finishStatLabel {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.finishText {
+  color: var(--color-text-secondary);
+}
+
+.finishActions {
+  display: flex;
+  gap: var(--spacing-md);
+  width: 100%;
+}
+
+.finishActions button {
+  flex: 1;
+}

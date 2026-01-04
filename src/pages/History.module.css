@@ -1,0 +1,214 @@
+.page {
+  padding: var(--spacing-lg);
+  padding-top: calc(var(--spacing-xl) + env(safe-area-inset-top));
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.statIcon {
+  color: var(--color-accent-primary);
+  width: 20px;
+  height: 20px;
+}
+
+.statInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.statLabel {
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-2xl) var(--spacing-md);
+}
+
+.emptyIcon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-xl);
+  color: var(--color-text-muted);
+}
+
+.emptyState h3 {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  color: var(--color-text-primary);
+}
+
+.emptyState p {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.logList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.logGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.groupDate {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  padding-left: var(--spacing-xs);
+}
+
+.logCard {
+  cursor: pointer;
+}
+
+.logHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.logInfo {
+  flex: 1;
+}
+
+.logName {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.logMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.logTime {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.logProgress {
+  flex-shrink: 0;
+}
+
+.logProgressRing {
+  position: relative;
+  width: 48px;
+  height: 48px;
+}
+
+.logProgressRing svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.ringBg {
+  fill: none;
+  stroke: var(--color-bg-elevated);
+  stroke-width: 3;
+}
+
+.ringFill {
+  fill: none;
+  stroke: var(--color-accent-primary);
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.3s ease;
+}
+
+.ringPercent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.logExercises {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.logExercise {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.logMore {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
