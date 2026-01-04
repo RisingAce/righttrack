@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Loader2, AlertCircle } from 'lucide-react'
+import { Loader2, Dumbbell } from 'lucide-react'
+import { getFallbackIcon } from '../assets/exercise-fallbacks'
 import styles from './ExerciseGif.module.css'
 
 export const ExerciseGif = ({ 
   gifUrl, 
   name, 
+  category,
+  equipment,
   size = 'md',
   showName = false,
   className = '' 
@@ -13,6 +16,7 @@ export const ExerciseGif = ({
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [imageSrc, setImageSrc] = useState(null)
+  const [useFallback, setUseFallback] = useState(false)
 
   useEffect(() => {
     if (!gifUrl) {
@@ -34,15 +38,23 @@ export const ExerciseGif = ({
     }
     
     img.onerror = () => {
-      setError(true)
-      setLoading(false)
+      // Try fallback icon instead of showing error
+      const fallbackSrc = getFallbackIcon(category, equipment)
+      if (fallbackSrc && !useFallback) {
+        setUseFallback(true)
+        setImageSrc(fallbackSrc)
+        setLoading(false)
+      } else {
+        setError(true)
+        setLoading(false)
+      }
     }
 
     return () => {
       img.onload = null
       img.onerror = null
     }
-  }, [gifUrl])
+  }, [gifUrl, category, equipment, useFallback])
 
   return (
     <div className={`${styles.container} ${styles[size]} ${className}`}>
@@ -68,8 +80,7 @@ export const ExerciseGif = ({
             exit={{ opacity: 0 }}
             className={styles.error}
           >
-            <AlertCircle size={size === 'sm' ? 24 : 32} />
-            <span className={styles.errorText}>No preview</span>
+            <Dumbbell size={size === 'sm' ? 24 : 32} className={styles.fallbackIcon} />
           </motion.div>
         )}
 
@@ -79,7 +90,7 @@ export const ExerciseGif = ({
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className={styles.imageWrapper}
+            className={`${styles.imageWrapper} ${useFallback ? styles.fallback : ''}`}
           >
             <img 
               src={imageSrc} 

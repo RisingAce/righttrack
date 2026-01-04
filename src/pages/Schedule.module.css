@@ -1,0 +1,231 @@
+.page {
+  padding: var(--spacing-lg);
+  padding-top: calc(var(--spacing-xl) + env(safe-area-inset-top));
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.dayCard {
+  transition: all var(--transition-fast);
+}
+
+.dayCard.today {
+  border: 2px solid var(--color-accent-primary);
+  background: var(--color-accent-soft);
+}
+
+.dayHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.dayInfo {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+}
+
+.dayShort {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  font-family: var(--font-display);
+}
+
+.dayLabel {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.todayBadge {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--color-accent-primary);
+  color: var(--color-bg-primary);
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.assignedTemplate {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+.templateButton {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md);
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-md);
+  text-align: left;
+  transition: all var(--transition-fast);
+}
+
+.templateButton:hover {
+  background: var(--color-bg-hover);
+}
+
+.templateInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.templateName {
+  font-weight: 600;
+  color: var(--color-text-primary);
+  font-size: 0.95rem;
+}
+
+.templateMeta {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.chevron {
+  color: var(--color-text-muted);
+}
+
+.removeBtn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.removeBtn:hover {
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--color-danger);
+}
+
+.emptyDay {
+  width: 100%;
+  padding: var(--spacing-lg);
+  background: var(--color-bg-deep);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+  transition: all var(--transition-fast);
+}
+
+.emptyDay:hover {
+  border-color: var(--color-accent-primary);
+  background: var(--color-accent-soft);
+}
+
+.emptyText {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.emptyAction {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+/* Template Picker Modal */
+.templateList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.templateOption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md);
+  background: var(--color-bg-elevated);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  text-align: left;
+  transition: all var(--transition-fast);
+}
+
+.templateOption:hover {
+  background: var(--color-bg-hover);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.templateOption.selected {
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent-primary);
+}
+
+.templateOptionInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.templateOptionName {
+  font-weight: 600;
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.defaultBadge {
+  padding: 2px var(--spacing-xs);
+  background: var(--color-info);
+  background: rgba(96, 165, 250, 0.15);
+  color: var(--color-info);
+  border-radius: var(--radius-sm);
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.templateOptionDesc {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.checkIcon {
+  color: var(--color-accent-primary);
+  flex-shrink: 0;
+}

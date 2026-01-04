@@ -1,12 +1,12 @@
 import { NavLink, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, Dumbbell, ClipboardList, BarChart3, User } from 'lucide-react'
+import { Home, Dumbbell, Calendar, BarChart3, User } from 'lucide-react'
 import styles from './Layout.module.css'
 
 const navItems = [
   { path: '/', icon: Home, label: 'Home' },
   { path: '/workout', icon: Dumbbell, label: 'Workout' },
-  { path: '/templates', icon: ClipboardList, label: 'Templates' },
+  { path: '/schedule', icon: Calendar, label: 'Schedule' },
   { path: '/history', icon: BarChart3, label: 'History' },
   { path: '/profile', icon: User, label: 'Profile' },
 ]

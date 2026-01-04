@@ -1,11 +1,15 @@
 import { useState, useEffect, useCallback } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { exerciseCatalog } from '../data/exercises'
+import { defaultTemplates as prebuiltTemplates } from '../data/defaultTemplates'
 
 const STORAGE_KEY = 'righttrack_data'
 
 // Use the real ExerciseDB catalog
 const defaultExercises = exerciseCatalog
+
+// Days of the week
+const DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
 
 const defaultUser = {
@@ -14,11 +18,40 @@ const defaultUser = {
   createdAt: new Date().toISOString(),
 }
 
+const defaultWeeklySchedule = {
+  monday: null,
+  tuesday: null,
+  wednesday: null,
+  thursday: null,
+  friday: null,
+  saturday: null,
+  sunday: null,
+}
+
+// Initialize default templates with IDs
+const initializeDefaultTemplates = () => {
+  return prebuiltTemplates.map(template => ({
+    ...template,
+    id: uuidv4(),
+    createdAt: new Date().toISOString(),
+    isDefault: true,
+  }))
+}
+
 const getInitialData = () => {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) {
-      return JSON.parse(stored)
+      const data = JSON.parse(stored)
+      // Add weekly schedule if it doesn't exist (for existing users)
+      if (!data.weeklySchedule) {
+        data.weeklySchedule = defaultWeeklySchedule
+      }
+      // Add default templates if user has no templates
+      if (!data.templates || data.templates.length === 0) {
+        data.templates = initializeDefaultTemplates()
+      }
+      return data
     }
   } catch (e) {
     console.error('Failed to load data from localStorage:', e)
@@ -27,9 +60,10 @@ const getInitialData = () => {
   return {
     user: defaultUser,
     exercises: defaultExercises,
-    templates: [],
+    templates: initializeDefaultTemplates(),
     workoutLogs: [],
     currentWorkout: null,
+    weeklySchedule: defaultWeeklySchedule,
   }
 }
 
@@ -236,12 +270,31 @@ export const useStore = () => {
     return { totalWorkouts, thisWeek, totalSets, streak }
   }, [data.workoutLogs])
 
+  // Weekly schedule functions
+  const setDayTemplate = useCallback((day, templateId) => {
+    setData(prev => ({
+      ...prev,
+      weeklySchedule: {
+        ...prev.weeklySchedule,
+        [day]: templateId
+      }
+    }))
+  }, [])
+
+  const getTodayTemplate = useCallback(() => {
+    const today = DAYS[new Date().getDay() === 0 ? 6 : new Date().getDay() - 1]
+    const templateId = data.weeklySchedule[today]
+    if (!templateId) return null
+    return data.templates.find(t => t.id === templateId)
+  }, [data.weeklySchedule, data.templates])
+
   return {
     user: data.user,
     exercises: data.exercises,
     templates: data.templates,
     workoutLogs: data.workoutLogs,
     currentWorkout: data.currentWorkout,
+    weeklySchedule: data.weeklySchedule,
     updateUser,
     createTemplate,
     updateTemplate,
@@ -255,6 +308,8 @@ export const useStore = () => {
     getExercise,
     getAlternatives,
     getWorkoutStats,
+    setDayTemplate,
+    getTodayTemplate,
   }
 }
 

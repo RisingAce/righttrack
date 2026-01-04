@@ -8,10 +8,10 @@ import styles from './Home.module.css'
 
 export const Home = () => {
   const navigate = useNavigate()
-  const { user, templates, currentWorkout, getWorkoutStats } = useAppStore()
+  const { user, templates, currentWorkout, getWorkoutStats, getTodayTemplate } = useAppStore()
   const stats = getWorkoutStats()
 
-  const todayWorkout = templates.length > 0 ? templates[0] : null
+  const todayWorkout = getTodayTemplate()
 
   const greeting = () => {
     const hour = new Date().getHours()
@@ -113,11 +113,12 @@ export const Home = () => {
           <Card delay={0.2}>
             <CardContent>
               <div className={styles.todayHeader}>
-                <span className={styles.todayBadge}>Recommended</span>
+                <span className={styles.todayBadge}>Today's Workout</span>
               </div>
               <h3 className={styles.todayTitle}>{todayWorkout.name}</h3>
               <p className={styles.todayMeta}>
                 {todayWorkout.exercises.length} exercises
+                {todayWorkout.description && ` · ${todayWorkout.description}`}
               </p>
               <Button
                 icon={Play}
@@ -133,13 +134,18 @@ export const Home = () => {
           <Card delay={0.2}>
             <CardContent className={styles.emptyState}>
               <div className={styles.emptyIcon}>
-                <Plus size={32} />
+                <Calendar size={32} />
               </div>
-              <h3>Create Your First Template</h3>
-              <p>Set up a workout template to get started with your training.</p>
-              <Button onClick={() => navigate('/templates')} fullWidth>
-                Create Template
-              </Button>
+              <h3>No Workout Scheduled</h3>
+              <p>Plan your week with pre-built templates or create your own.</p>
+              <div className={styles.emptyActions}>
+                <Button onClick={() => navigate('/schedule')} fullWidth>
+                  View Schedule
+                </Button>
+                <Button variant="secondary" onClick={() => navigate('/templates')} fullWidth>
+                  Browse Templates
+                </Button>
+              </div>
             </CardContent>
           </Card>
         ) : null}

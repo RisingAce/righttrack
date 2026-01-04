@@ -105,11 +105,13 @@ export const ExercisePicker = ({ onSelect, selectedIds = [] }) => {
                       className={styles.exerciseMain}
                       onClick={() => onSelect(exercise)}
                     >
-                      <ExerciseGif 
-                        gifUrl={exercise.gifUrl}
-                        name={exercise.name}
-                        size="sm"
-                      />
+                    <ExerciseGif 
+                      gifUrl={exercise.gifUrl}
+                      name={exercise.name}
+                      category={exercise.category}
+                      equipment={exercise.equipment}
+                      size="sm"
+                    />
                       <div className={styles.exerciseInfo}>
                         <span className={styles.exerciseName}>{exercise.name}</span>
                         <span className={styles.exerciseMeta}>

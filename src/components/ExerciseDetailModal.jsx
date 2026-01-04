@@ -99,6 +99,8 @@ export const ExerciseDetailModal = ({ isOpen, onClose, exerciseName, exerciseId,
               <ExerciseGif 
                 gifUrl={exerciseData.gifUrl}
                 name={exerciseData.name}
+                category={exerciseData.category}
+                equipment={exerciseData.equipment}
                 size="xl"
               />
             </div>

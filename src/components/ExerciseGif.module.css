@@ -81,6 +81,15 @@
   object-fit: cover;
 }
 
+.fallback .gif {
+  object-fit: contain;
+  padding: 15%;
+}
+
+.fallbackIcon {
+  color: var(--color-accent-primary);
+}
+
 .nameOverlay {
   position: absolute;
   bottom: 0;

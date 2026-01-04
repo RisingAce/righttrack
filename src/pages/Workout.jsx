@@ -223,11 +223,13 @@ export const Workout = () => {
           </div>
         </div>
 
-        {exerciseGifs[currentEx.exerciseId] && (
+        {(exerciseGifs[currentEx.exerciseId] || exerciseData) && (
           <div className={styles.gifPreview}>
             <ExerciseGif 
-              gifUrl={exerciseGifs[currentEx.exerciseId]}
+              gifUrl={exerciseGifs[currentEx.exerciseId] || exerciseData?.gifUrl}
               name={currentEx.exerciseName}
+              category={exerciseData?.category}
+              equipment={exerciseData?.equipment}
               size="lg"
             />
           </div>
@@ -302,6 +304,15 @@ export const Workout = () => {
               className={styles.alternativeItem}
               onClick={() => handleSwapExercise(alt.id)}
             >
+              {(exerciseGifs[alt.id] || alt.gifUrl) && (
+                <ExerciseGif 
+                  gifUrl={exerciseGifs[alt.id] || alt.gifUrl}
+                  name={alt.name}
+                  category={alt.category}
+                  equipment={alt.equipment}
+                  size="sm"
+                />
+              )}
               <div className={styles.alternativeInfo}>
                 <span className={styles.alternativeName}>{alt.name}</span>
                 <span className={styles.alternativeEquipment}>{alt.equipment}</span>
