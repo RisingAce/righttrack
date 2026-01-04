@@ -30,11 +30,12 @@
 
 .navInner {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  gap: var(--spacing-xs);
   background: linear-gradient(135deg, rgba(17, 26, 50, 0.8), rgba(12, 18, 36, 0.85));
   border-radius: 20px;
-  padding: 10px;
+  padding: 10px 12px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45), 0 0 40px rgba(118, 227, 193, 0.12);
   backdrop-filter: blur(18px);
@@ -44,34 +45,17 @@
 
 .navItem {
   position: relative;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3px;
-  padding: 10px 16px;
+  padding: 8px 10px;
   color: var(--color-text-secondary);
   transition: color var(--transition-fast);
   border-radius: var(--radius-lg);
-  min-width: 56px;
+  min-width: 52px;
   font-weight: 600;
-}
-
-.navRefresh {
-  width: 42px;
-  height: 42px;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-bg-elevated);
-  color: var(--color-text-secondary);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: all var(--transition-fast);
-}
-
-.navRefresh:hover {
-  background: var(--color-accent-soft);
-  color: var(--color-accent-primary);
 }
 
 .navItem:hover {
@@ -104,9 +88,55 @@
   letter-spacing: 0.04em;
 }
 
+.navMore {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navMoreBtn {
+  min-width: unset;
+  padding: 8px 10px;
+}
+
+.navMenu {
+  position: absolute;
+  bottom: 54px;
+  right: 0;
+  min-width: 170px;
+  background: var(--color-bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.navMenuItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.navMenuItem:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.navMenuItemActive {
+  color: var(--color-accent-primary);
+  background: var(--color-accent-soft);
+}
+
 .createBtn {
-  width: 56px;
-  height: 56px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--color-accent-primary) 0%, #4ade80 100%);
   display: flex;
@@ -120,6 +150,81 @@
   position: relative;
   margin-top: -24px;
   border: 3px solid var(--color-bg-secondary);
+}
+
+.createBtnActive {
+  box-shadow: 
+    0 6px 20px rgba(110, 231, 183, 0.55),
+    0 4px 10px rgba(0, 0, 0, 0.35);
+  transform: translateY(-2px);
+}
+
+.fabWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fabMenu {
+  position: absolute;
+  bottom: 64px;
+  right: 0;
+  min-width: 180px;
+  background: linear-gradient(145deg, rgba(17, 26, 50, 0.92), rgba(12, 18, 36, 0.96));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  z-index: 6;
+  backdrop-filter: blur(10px);
+}
+
+.fabItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+  color: var(--color-text-secondary);
+  background: transparent;
+  transition: all var(--transition-fast);
+}
+
+.fabItem:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.navMore {
+  display: none;
+}
+
+@media (max-width: 520px) {
+  .navInner {
+    gap: 6px;
+    padding: 10px;
+  }
+  .navItem {
+    padding: 6px 8px;
+    font-size: 0.78rem;
+  }
+  .navLabel {
+    font-size: 0.68rem;
+  }
+  .createBtn {
+    width: 58px;
+    height: 58px;
+    margin-top: -20px;
+  }
+  .fabMenu {
+    bottom: 72px;
+    min-width: 200px;
+  }
+  .fabItem {
+    padding: 14px var(--spacing-lg);
+    font-size: 0.95rem;
+  }
 }
 
 .createBtn:hover {
