@@ -1,5 +1,5 @@
 // Curated exercise catalog matching ExerciseDB
-// These use ExerciseDB's exact naming and IDs for perfect GIF matching
+// GIFs hosted on ExerciseDB's public S3 bucket - no authentication required
 
 export const exerciseCatalog = [
   // CHEST
@@ -10,7 +10,7 @@ export const exerciseCatalog = [
     equipment: 'barbell',
     bodyPart: 'chest',
     target: 'pectorals',
-    gifUrl: 'https://v2.exercisedb.io/image/jgCuUxlqFvWyGJ',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/jgCuUxlqFvWyGJ',
     alternatives: ['0047', '0033', '1301', '0662']
   },
   {
@@ -20,7 +20,7 @@ export const exerciseCatalog = [
     equipment: 'barbell',
     bodyPart: 'chest',
     target: 'pectorals',
-    gifUrl: 'https://v2.exercisedb.io/image/CKi2wbnKCPMdx2',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/CKi2wbnKCPMdx2',
     alternatives: ['0025', '0047', '0301']
   },
   {
@@ -30,7 +30,7 @@ export const exerciseCatalog = [
     equipment: 'dumbbells',
     bodyPart: 'chest',
     target: 'pectorals',
-    gifUrl: 'https://v2.exercisedb.io/image/r4b2b7YSbAU6w5',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/r4b2b7YSbAU6w5',
     alternatives: ['0025', '0033', '3545']
   },
   {
@@ -40,7 +40,7 @@ export const exerciseCatalog = [
     equipment: 'dumbbells',
     bodyPart: 'chest',
     target: 'pectorals',
-    gifUrl: 'https://v2.exercisedb.io/image/hKZXMDUvWv62qH',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/hKZXMDUvWv62qH',
     alternatives: ['0033', '0047', '0025']
   },
   {
@@ -50,7 +50,7 @@ export const exerciseCatalog = [
     equipment: 'cable',
     bodyPart: 'chest',
     target: 'pectorals',
-    gifUrl: 'https://v2.exercisedb.io/image/AakqjUUF0yrD-e',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/AakqjUUF0yrD-e',
     alternatives: ['0025', '0047', '0291']
   },
   {
@@ -60,7 +60,7 @@ export const exerciseCatalog = [
     equipment: 'bodyweight',
     bodyPart: 'chest',
     target: 'pectorals',
-    gifUrl: 'https://v2.exercisedb.io/image/u1q8z3Qtt6tVaJ',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/u1q8z3Qtt6tVaJ',
     alternatives: ['0025', '0047', '1467']
   },
   
@@ -72,7 +72,7 @@ export const exerciseCatalog = [
     equipment: 'barbell',
     bodyPart: 'back',
     target: 'spine',
-    gifUrl: 'https://v2.exercisedb.io/image/S9hKxwQo2ZNUVC',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/S9hKxwQo2ZNUVC',
     alternatives: ['0696', '0046', '0144']
   },
   {
@@ -82,7 +82,7 @@ export const exerciseCatalog = [
     equipment: 'barbell',
     bodyPart: 'back',
     target: 'lats',
-    gifUrl: 'https://v2.exercisedb.io/image/Bsoe4xmjzxb8Qp',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/Bsoe4xmjzxb8Qp',
     alternatives: ['0032', '0144', '0696']
   },
   {
@@ -92,7 +92,7 @@ export const exerciseCatalog = [
     equipment: 'cable',
     bodyPart: 'back',
     target: 'lats',
-    gifUrl: 'https://v2.exercisedb.io/image/b4UYPj1-tPETya',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/b4UYPj1-tPETya',
     alternatives: ['0046', '0297', '0696']
   },
   {
@@ -102,7 +102,7 @@ export const exerciseCatalog = [
     equipment: 'dumbbells',
     bodyPart: 'back',
     target: 'lats',
-    gifUrl: 'https://v2.exercisedb.io/image/sNJjM1gITqKvpR',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/sNJjM1gITqKvpR',
     alternatives: ['0046', '0144', '0696']
   },
   {
@@ -112,7 +112,7 @@ export const exerciseCatalog = [
     equipment: 'bodyweight',
     bodyPart: 'back',
     target: 'lats',
-    gifUrl: 'https://v2.exercisedb.io/image/S9nBcvADBICLrL',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/S9nBcvADBICLrL',
     alternatives: ['0696', '0144', '0046']
   },
   {
@@ -122,7 +122,7 @@ export const exerciseCatalog = [
     equipment: 'cable',
     bodyPart: 'back',
     target: 'lats',
-    gifUrl: 'https://v2.exercisedb.io/image/s4MhtLevIzMYFX',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/s4MhtLevIzMYFX',
     alternatives: ['0609', '0144', '0046']
   },
 
@@ -134,7 +134,7 @@ export const exerciseCatalog = [
     equipment: 'barbell',
     bodyPart: 'shoulders',
     target: 'delts',
-    gifUrl: 'https://v2.exercisedb.io/image/S1ek56bqzUkfmK',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/S1ek56bqzUkfmK',
     alternatives: ['0310', '0292', '0148']
   },
   {
@@ -144,7 +144,7 @@ export const exerciseCatalog = [
     equipment: 'dumbbells',
     bodyPart: 'shoulders',
     target: 'delts',
-    gifUrl: 'https://v2.exercisedb.io/image/lFvmBOlRy0jBn9',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/lFvmBOlRy0jBn9',
     alternatives: ['0555', '0292', '0148']
   },
   {
@@ -154,7 +154,7 @@ export const exerciseCatalog = [
     equipment: 'dumbbells',
     bodyPart: 'shoulders',
     target: 'delts',
-    gifUrl: 'https://v2.exercisedb.io/image/o62Sd4RqWBXJ3b',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/o62Sd4RqWBXJ3b',
     alternatives: ['0310', '0148', '0425']
   },
   {
@@ -164,7 +164,7 @@ export const exerciseCatalog = [
     equipment: 'cable',
     bodyPart: 'shoulders',
     target: 'delts',
-    gifUrl: 'https://v2.exercisedb.io/image/Uh52kF8u7w1PX4',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/Uh52kF8u7w1PX4',
     alternatives: ['0292', '0310', '0304']
   },
   {
@@ -174,7 +174,7 @@ export const exerciseCatalog = [
     equipment: 'dumbbells',
     bodyPart: 'shoulders',
     target: 'delts',
-    gifUrl: 'https://v2.exercisedb.io/image/ow-XOAaG8mDgxX',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/ow-XOAaG8mDgxX',
     alternatives: ['0148', '0292', '0310']
   },
 
@@ -186,7 +186,7 @@ export const exerciseCatalog = [
     equipment: 'barbell',
     bodyPart: 'upper legs',
     target: 'quads',
-    gifUrl: 'https://v2.exercisedb.io/image/7HJKfJEH1MQQfz',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/7HJKfJEH1MQQfz',
     alternatives: ['0549', '0606', '0341']
   },
   {
@@ -196,7 +196,7 @@ export const exerciseCatalog = [
     equipment: 'machine',
     bodyPart: 'upper legs',
     target: 'quads',
-    gifUrl: 'https://v2.exercisedb.io/image/DQI4EgdYy-H9L5',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/DQI4EgdYy-H9L5',
     alternatives: ['0043', '0606', '0341']
   },
   {
@@ -206,7 +206,7 @@ export const exerciseCatalog = [
     equipment: 'barbell',
     bodyPart: 'upper legs',
     target: 'hamstrings',
-    gifUrl: 'https://v2.exercisedb.io/image/OC3RQoCwmgxrZd',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/OC3RQoCwmgxrZd',
     alternatives: ['0558', '0606', '0043']
   },
   {
@@ -216,7 +216,7 @@ export const exerciseCatalog = [
     equipment: 'machine',
     bodyPart: 'upper legs',
     target: 'hamstrings',
-    gifUrl: 'https://v2.exercisedb.io/image/kYXfPmtPBgLW6e',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/kYXfPmtPBgLW6e',
     alternatives: ['0035', '0043', '0606']
   },
   {
@@ -226,7 +226,7 @@ export const exerciseCatalog = [
     equipment: 'bodyweight',
     bodyPart: 'upper legs',
     target: 'quads',
-    gifUrl: 'https://v2.exercisedb.io/image/tVGQCLU2uHNPFF',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/tVGQCLU2uHNPFF',
     alternatives: ['0043', '0549', '0341']
   },
   {
@@ -236,7 +236,7 @@ export const exerciseCatalog = [
     equipment: 'dumbbells',
     bodyPart: 'upper legs',
     target: 'quads',
-    gifUrl: 'https://v2.exercisedb.io/image/xQIY4bX1KXFQdZ',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/xQIY4bX1KXFQdZ',
     alternatives: ['0606', '0043', '0549']
   },
   {
@@ -246,7 +246,7 @@ export const exerciseCatalog = [
     equipment: 'bodyweight',
     bodyPart: 'lower legs',
     target: 'calves',
-    gifUrl: 'https://v2.exercisedb.io/image/u0IUL4bUKnDQcN',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/u0IUL4bUKnDQcN',
     alternatives: ['0871', '0873']
   },
 
@@ -258,7 +258,7 @@ export const exerciseCatalog = [
     equipment: 'barbell',
     bodyPart: 'upper arms',
     target: 'biceps',
-    gifUrl: 'https://v2.exercisedb.io/image/8xX-1kXmF5qg3F',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/8xX-1kXmF5qg3F',
     alternatives: ['0284', '0286', '0138']
   },
   {
@@ -268,7 +268,7 @@ export const exerciseCatalog = [
     equipment: 'dumbbells',
     bodyPart: 'upper arms',
     target: 'biceps',
-    gifUrl: 'https://v2.exercisedb.io/image/29bkc-D0RVpOqN',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/29bkc-D0RVpOqN',
     alternatives: ['0023', '0286', '0138']
   },
   {
@@ -278,7 +278,7 @@ export const exerciseCatalog = [
     equipment: 'dumbbells',
     bodyPart: 'upper arms',
     target: 'biceps',
-    gifUrl: 'https://v2.exercisedb.io/image/ePIyGULU47BM3z',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/ePIyGULU47BM3z',
     alternatives: ['0284', '0023', '0138']
   },
   {
@@ -288,7 +288,7 @@ export const exerciseCatalog = [
     equipment: 'cable',
     bodyPart: 'upper arms',
     target: 'biceps',
-    gifUrl: 'https://v2.exercisedb.io/image/QEsmhiKJMczV1N',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/QEsmhiKJMczV1N',
     alternatives: ['0023', '0284', '0286']
   },
 
@@ -300,7 +300,7 @@ export const exerciseCatalog = [
     equipment: 'bodyweight',
     bodyPart: 'upper arms',
     target: 'triceps',
-    gifUrl: 'https://v2.exercisedb.io/image/iAZn56PaZd83sS',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/iAZn56PaZd83sS',
     alternatives: ['0124', '0743', '0331']
   },
   {
@@ -310,7 +310,7 @@ export const exerciseCatalog = [
     equipment: 'cable',
     bodyPart: 'upper arms',
     target: 'triceps',
-    gifUrl: 'https://v2.exercisedb.io/image/puhYQIbZF6lRFm',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/puhYQIbZF6lRFm',
     alternatives: ['0749', '0743', '0331']
   },
   {
@@ -320,7 +320,7 @@ export const exerciseCatalog = [
     equipment: 'barbell',
     bodyPart: 'upper arms',
     target: 'triceps',
-    gifUrl: 'https://v2.exercisedb.io/image/J4dHXS8QHFxaxj',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/J4dHXS8QHFxaxj',
     alternatives: ['0124', '0749', '0331']
   },
   {
@@ -330,7 +330,7 @@ export const exerciseCatalog = [
     equipment: 'dumbbells',
     bodyPart: 'upper arms',
     target: 'triceps',
-    gifUrl: 'https://v2.exercisedb.io/image/n1KJLd2eLLM6l7',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/n1KJLd2eLLM6l7',
     alternatives: ['0124', '0743', '0749']
   },
 
@@ -342,7 +342,7 @@ export const exerciseCatalog = [
     equipment: 'bodyweight',
     bodyPart: 'waist',
     target: 'abs',
-    gifUrl: 'https://v2.exercisedb.io/image/Nyi5XiQ0R0RuDZ',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/Nyi5XiQ0R0RuDZ',
     alternatives: ['0685', '0142', '0650']
   },
   {
@@ -352,7 +352,7 @@ export const exerciseCatalog = [
     equipment: 'bodyweight',
     bodyPart: 'waist',
     target: 'abs',
-    gifUrl: 'https://v2.exercisedb.io/image/qVGXGMZ5d1vQdg',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/qVGXGMZ5d1vQdg',
     alternatives: ['0001', '0142', '0685']
   },
   {
@@ -362,7 +362,7 @@ export const exerciseCatalog = [
     equipment: 'cable',
     bodyPart: 'waist',
     target: 'abs',
-    gifUrl: 'https://v2.exercisedb.io/image/EWEh87--5rbfXX',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/EWEh87--5rbfXX',
     alternatives: ['0650', '0001', '0685']
   },
   {
@@ -372,7 +372,7 @@ export const exerciseCatalog = [
     equipment: 'bodyweight',
     bodyPart: 'waist',
     target: 'abs',
-    gifUrl: 'https://v2.exercisedb.io/image/MtQPW2eA5bJbZi',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/MtQPW2eA5bJbZi',
     alternatives: ['0001', '0650', '0142']
   },
   {
@@ -382,7 +382,7 @@ export const exerciseCatalog = [
     equipment: 'bodyweight',
     bodyPart: 'waist',
     target: 'abs',
-    gifUrl: 'https://v2.exercisedb.io/image/S6Y6PY77UMvOMi',
+    gifUrl: 'https://v2.exercisedb.io/api/v1/image/S6Y6PY77UMvOMi',
     alternatives: ['0001', '0650', '0142']
   }
 ]

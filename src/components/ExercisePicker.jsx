@@ -94,26 +94,29 @@ export const ExercisePicker = ({ onSelect, selectedIds = [] }) => {
                 const isSelected = selectedIds.includes(exercise.id)
                 
                 return (
-                  <motion.button
+                  <motion.div
                     key={exercise.id}
                     className={`${styles.exercise} ${isSelected ? styles.selected : ''}`}
-                    onClick={() => onSelect(exercise)}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.02 }}
-                    whileTap={{ scale: 0.98 }}
                   >
-                    <ExerciseGif 
-                      gifUrl={exercise.gifUrl}
-                      name={exercise.name}
-                      size="sm"
-                    />
-                    <div className={styles.exerciseInfo}>
-                      <span className={styles.exerciseName}>{exercise.name}</span>
-                      <span className={styles.exerciseMeta}>
-                        {equipmentLabels[exercise.equipment] || exercise.equipment}
-                      </span>
-                    </div>
+                    <button 
+                      className={styles.exerciseMain}
+                      onClick={() => onSelect(exercise)}
+                    >
+                      <ExerciseGif 
+                        gifUrl={exercise.gifUrl}
+                        name={exercise.name}
+                        size="sm"
+                      />
+                      <div className={styles.exerciseInfo}>
+                        <span className={styles.exerciseName}>{exercise.name}</span>
+                        <span className={styles.exerciseMeta}>
+                          {equipmentLabels[exercise.equipment] || exercise.equipment}
+                        </span>
+                      </div>
+                    </button>
                     <button 
                       className={styles.infoBtn}
                       onClick={(e) => handleShowDetail(exercise, e)}
@@ -123,7 +126,7 @@ export const ExercisePicker = ({ onSelect, selectedIds = [] }) => {
                     {isSelected && (
                       <div className={styles.checkmark}>✓</div>
                     )}
-                  </motion.button>
+                  </motion.div>
                 )
               })}
             </div>
@@ -134,7 +137,7 @@ export const ExercisePicker = ({ onSelect, selectedIds = [] }) => {
       <ExerciseDetailModal 
         isOpen={detailModalOpen}
         onClose={() => setDetailModalOpen(false)}
-        exerciseName={selectedExercise?.name}
+        exerciseData={selectedExercise}
       />
     </div>
   )

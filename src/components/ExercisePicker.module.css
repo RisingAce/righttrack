@@ -71,12 +71,11 @@
 .exercise {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
   padding: var(--spacing-sm);
   background: var(--color-bg-elevated);
   border: 1px solid transparent;
   border-radius: var(--radius-md);
-  text-align: left;
   transition: all var(--transition-fast);
   position: relative;
 }
@@ -88,6 +87,15 @@
 .exercise.selected {
   background: var(--color-accent-soft);
   border-color: var(--color-accent-primary);
+}
+
+.exerciseMain {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  text-align: left;
+  color: inherit;
 }
 
 .exerciseInfo {

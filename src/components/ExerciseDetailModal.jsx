@@ -2,29 +2,47 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { X, Target, Dumbbell, Zap, Info, AlertCircle } from 'lucide-react'
 import { getExerciseById, findExerciseByName } from '../services/exerciseDb'
+import { useAppStore } from '../store/StoreContext'
 import { ExerciseGif } from './ExerciseGif'
 import { Button } from './Button'
 import styles from './ExerciseDetailModal.module.css'
 
-export const ExerciseDetailModal = ({ isOpen, onClose, exerciseName, exerciseId }) => {
-  const [exerciseData, setExerciseData] = useState(null)
+export const ExerciseDetailModal = ({ isOpen, onClose, exerciseName, exerciseId, exerciseData: providedData }) => {
+  const { exercises, getExercise } = useAppStore()
+  const [exerciseData, setExerciseData] = useState(providedData || null)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (isOpen && (exerciseId || exerciseName)) {
+    if (isOpen && (exerciseId || exerciseName) && !providedData) {
       loadExerciseData()
+    } else if (providedData) {
+      setExerciseData(providedData)
     }
-  }, [isOpen, exerciseId, exerciseName])
+  }, [isOpen, exerciseId, exerciseName, providedData])
 
   const loadExerciseData = async () => {
     setLoading(true)
     try {
       let data = null
       
+      // Try local store first
       if (exerciseId) {
-        data = await getExerciseById(exerciseId)
+        data = getExercise(exerciseId)
       } else if (exerciseName) {
-        data = await findExerciseByName(exerciseName)
+        // Search in local exercises
+        data = exercises.find(ex => 
+          ex.name.toLowerCase() === exerciseName.toLowerCase() ||
+          ex.name.toLowerCase().includes(exerciseName.toLowerCase())
+        )
+      }
+      
+      // If not in local store, try API (with existing cache)
+      if (!data) {
+        if (exerciseId) {
+          data = await getExerciseById(exerciseId)
+        } else if (exerciseName) {
+          data = await findExerciseByName(exerciseName)
+        }
       }
       
       setExerciseData(data)
