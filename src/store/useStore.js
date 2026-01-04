@@ -1,54 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+import { exerciseCatalog } from '../data/exercises'
 
 const STORAGE_KEY = 'righttrack_data'
 
-const defaultExercises = [
-  // Chest
-  { id: 'bench-press', name: 'Bench Press', category: 'chest', equipment: 'barbell', alternatives: ['dumbbell-press', 'push-ups', 'cable-fly'] },
-  { id: 'dumbbell-press', name: 'Dumbbell Press', category: 'chest', equipment: 'dumbbells', alternatives: ['bench-press', 'push-ups', 'machine-press'] },
-  { id: 'incline-press', name: 'Incline Press', category: 'chest', equipment: 'barbell', alternatives: ['incline-dumbbell', 'cable-fly-high'] },
-  { id: 'push-ups', name: 'Push-Ups', category: 'chest', equipment: 'bodyweight', alternatives: ['bench-press', 'dumbbell-press'] },
-  { id: 'cable-fly', name: 'Cable Fly', category: 'chest', equipment: 'cable', alternatives: ['dumbbell-fly', 'pec-deck'] },
-  
-  // Back
-  { id: 'deadlift', name: 'Deadlift', category: 'back', equipment: 'barbell', alternatives: ['romanian-deadlift', 'rack-pull'] },
-  { id: 'barbell-row', name: 'Barbell Row', category: 'back', equipment: 'barbell', alternatives: ['dumbbell-row', 'cable-row'] },
-  { id: 'lat-pulldown', name: 'Lat Pulldown', category: 'back', equipment: 'cable', alternatives: ['pull-ups', 'assisted-pullup'] },
-  { id: 'pull-ups', name: 'Pull-Ups', category: 'back', equipment: 'bodyweight', alternatives: ['lat-pulldown', 'assisted-pullup'] },
-  { id: 'dumbbell-row', name: 'Dumbbell Row', category: 'back', equipment: 'dumbbells', alternatives: ['barbell-row', 'cable-row'] },
-  { id: 'cable-row', name: 'Seated Cable Row', category: 'back', equipment: 'cable', alternatives: ['barbell-row', 'dumbbell-row'] },
-  
-  // Shoulders
-  { id: 'overhead-press', name: 'Overhead Press', category: 'shoulders', equipment: 'barbell', alternatives: ['dumbbell-shoulder', 'machine-press'] },
-  { id: 'dumbbell-shoulder', name: 'Dumbbell Shoulder Press', category: 'shoulders', equipment: 'dumbbells', alternatives: ['overhead-press', 'arnold-press'] },
-  { id: 'lateral-raise', name: 'Lateral Raise', category: 'shoulders', equipment: 'dumbbells', alternatives: ['cable-lateral', 'machine-lateral'] },
-  { id: 'face-pull', name: 'Face Pull', category: 'shoulders', equipment: 'cable', alternatives: ['reverse-fly', 'band-pull-apart'] },
-  { id: 'reverse-fly', name: 'Reverse Fly', category: 'shoulders', equipment: 'dumbbells', alternatives: ['face-pull', 'cable-rear-delt'] },
-  
-  // Legs
-  { id: 'squat', name: 'Barbell Squat', category: 'legs', equipment: 'barbell', alternatives: ['leg-press', 'goblet-squat', 'hack-squat'] },
-  { id: 'leg-press', name: 'Leg Press', category: 'legs', equipment: 'machine', alternatives: ['squat', 'goblet-squat'] },
-  { id: 'romanian-deadlift', name: 'Romanian Deadlift', category: 'legs', equipment: 'barbell', alternatives: ['leg-curl', 'dumbbell-rdl'] },
-  { id: 'leg-curl', name: 'Leg Curl', category: 'legs', equipment: 'machine', alternatives: ['romanian-deadlift', 'nordic-curl'] },
-  { id: 'leg-extension', name: 'Leg Extension', category: 'legs', equipment: 'machine', alternatives: ['sissy-squat', 'split-squat'] },
-  { id: 'calf-raise', name: 'Calf Raise', category: 'legs', equipment: 'machine', alternatives: ['standing-calf', 'seated-calf'] },
-  { id: 'lunges', name: 'Lunges', category: 'legs', equipment: 'dumbbells', alternatives: ['split-squat', 'step-ups'] },
-  
-  // Arms
-  { id: 'barbell-curl', name: 'Barbell Curl', category: 'arms', equipment: 'barbell', alternatives: ['dumbbell-curl', 'cable-curl'] },
-  { id: 'dumbbell-curl', name: 'Dumbbell Curl', category: 'arms', equipment: 'dumbbells', alternatives: ['barbell-curl', 'hammer-curl'] },
-  { id: 'hammer-curl', name: 'Hammer Curl', category: 'arms', equipment: 'dumbbells', alternatives: ['dumbbell-curl', 'rope-curl'] },
-  { id: 'tricep-pushdown', name: 'Tricep Pushdown', category: 'arms', equipment: 'cable', alternatives: ['skull-crusher', 'dips'] },
-  { id: 'skull-crusher', name: 'Skull Crusher', category: 'arms', equipment: 'barbell', alternatives: ['tricep-pushdown', 'overhead-tricep'] },
-  { id: 'dips', name: 'Dips', category: 'arms', equipment: 'bodyweight', alternatives: ['tricep-pushdown', 'close-grip-bench'] },
-  
-  // Core
-  { id: 'plank', name: 'Plank', category: 'core', equipment: 'bodyweight', alternatives: ['dead-bug', 'hollow-hold'] },
-  { id: 'hanging-leg-raise', name: 'Hanging Leg Raise', category: 'core', equipment: 'bodyweight', alternatives: ['lying-leg-raise', 'cable-crunch'] },
-  { id: 'cable-crunch', name: 'Cable Crunch', category: 'core', equipment: 'cable', alternatives: ['weighted-crunch', 'ab-wheel'] },
-  { id: 'russian-twist', name: 'Russian Twist', category: 'core', equipment: 'dumbbells', alternatives: ['woodchop', 'pallof-press'] },
-]
+// Use the real ExerciseDB catalog
+const defaultExercises = exerciseCatalog
+
 
 const defaultUser = {
   id: uuidv4(),
