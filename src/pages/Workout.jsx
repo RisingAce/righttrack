@@ -1,14 +1,17 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Play, Square, Check, RefreshCw, ChevronRight, 
-  Timer, Flame, ArrowLeft, X, Repeat
+  Timer, Flame, ArrowLeft, X, Repeat, Info
 } from 'lucide-react'
 import { useAppStore } from '../store/StoreContext'
+import { findExerciseByName } from '../services/exerciseDb'
 import { Button } from '../components/Button'
 import { Card, CardContent } from '../components/Card'
 import { Modal } from '../components/Modal'
+import { ExerciseGif } from '../components/ExerciseGif'
+import { ExerciseDetailModal } from '../components/ExerciseDetailModal'
 import styles from './Workout.module.css'
 
 export const Workout = () => {
@@ -30,11 +33,28 @@ export const Workout = () => {
   const [activeExercise, setActiveExercise] = useState(0)
   const [showAlternatives, setShowAlternatives] = useState(false)
   const [showFinishConfirm, setShowFinishConfirm] = useState(false)
+  const [showDetailModal, setShowDetailModal] = useState(false)
+  const [exerciseGifs, setExerciseGifs] = useState({})
 
   const handleStartWorkout = (templateId) => {
     startWorkout(templateId)
     setShowTemplates(false)
   }
+
+  // Load exercise GIFs when workout starts
+  useEffect(() => {
+    if (currentWorkout && currentWorkout.exercises) {
+      currentWorkout.exercises.forEach(async (ex) => {
+        const data = await findExerciseByName(ex.exerciseName)
+        if (data && data.gifUrl) {
+          setExerciseGifs(prev => ({
+            ...prev,
+            [ex.exerciseId]: data.gifUrl
+          }))
+        }
+      })
+    }
+  }, [currentWorkout])
 
   const handleCompleteSet = (exerciseIndex, setIndex) => {
     const exercise = currentWorkout.exercises[exerciseIndex]
@@ -174,7 +194,7 @@ export const Workout = () => {
         className={styles.exerciseCard}
       >
         <div className={styles.exerciseHeader}>
-          <div>
+          <div className={styles.exerciseTitle}>
             <h2 className={styles.exerciseName}>
               {currentEx.exerciseName || exerciseData?.name}
             </h2>
@@ -184,16 +204,34 @@ export const Workout = () => {
               </span>
             )}
           </div>
-          {alternatives.length > 0 && (
+          <div className={styles.exerciseActions}>
             <button 
-              className={styles.swapBtn}
-              onClick={() => setShowAlternatives(true)}
+              className={styles.infoIconBtn}
+              onClick={() => setShowDetailModal(true)}
             >
-              <RefreshCw size={16} />
-              <span>Swap</span>
+              <Info size={18} />
             </button>
-          )}
+            {alternatives.length > 0 && (
+              <button 
+                className={styles.swapBtn}
+                onClick={() => setShowAlternatives(true)}
+              >
+                <RefreshCw size={16} />
+                <span>Swap</span>
+              </button>
+            )}
+          </div>
         </div>
+
+        {exerciseGifs[currentEx.exerciseId] && (
+          <div className={styles.gifPreview}>
+            <ExerciseGif 
+              gifUrl={exerciseGifs[currentEx.exerciseId]}
+              name={currentEx.exerciseName}
+              size="lg"
+            />
+          </div>
+        )}
 
         <div className={styles.setsContainer}>
           <div className={styles.setsHeader}>
@@ -301,6 +339,12 @@ export const Workout = () => {
           </div>
         </div>
       </Modal>
+
+      <ExerciseDetailModal 
+        isOpen={showDetailModal}
+        onClose={() => setShowDetailModal(false)}
+        exerciseName={currentEx?.exerciseName}
+      />
     </div>
   )
 }

@@ -72,12 +72,13 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
-  padding: var(--spacing-md);
+  padding: var(--spacing-sm);
   background: var(--color-bg-elevated);
   border: 1px solid transparent;
   border-radius: var(--radius-md);
   text-align: left;
   transition: all var(--transition-fast);
+  position: relative;
 }
 
 .exercise:hover {
@@ -87,17 +88,6 @@
 .exercise.selected {
   background: var(--color-accent-soft);
   border-color: var(--color-accent-primary);
-}
-
-.exerciseIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  background: var(--color-bg-secondary);
-  border-radius: var(--radius-sm);
-  color: var(--color-accent-primary);
 }
 
 .exerciseInfo {
@@ -115,6 +105,25 @@
 .exerciseMeta {
   font-size: 0.75rem;
   color: var(--color-text-muted);
+}
+
+.infoBtn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.infoBtn:hover {
+  background: var(--color-accent-soft);
+  color: var(--color-accent-primary);
+  transform: scale(1.1);
 }
 
 .checkmark {

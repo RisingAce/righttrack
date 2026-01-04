@@ -6,8 +6,12 @@ import { Workout } from './pages/Workout'
 import { Templates } from './pages/Templates'
 import { History } from './pages/History'
 import { Profile } from './pages/Profile'
+import { useExerciseCache } from './hooks/useExerciseCache'
 
 function App() {
+  // Prefetch exercises on app load for offline use
+  useExerciseCache()
+
   return (
     <StoreProvider>
       <Layout>

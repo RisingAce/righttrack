@@ -7,8 +7,11 @@ A beautiful, calm-styled Progressive Web App for tracking gym workouts. Perfect 
 ## ✨ Features
 
 - **📋 Workout Templates** - Create and manage custom workout templates with exercises, sets, reps, and weights
+- **🎬 Animated Exercise GIFs** - See proper form with 1,300+ professional exercise demonstrations
 - **🏃 Active Workout Tracking** - Track your progress through each workout with a beautiful, intuitive interface
 - **🔄 Equipment Alternatives** - When equipment is busy, easily swap to alternative exercises that work the same muscle groups
+- **📚 Exercise Library** - Browse detailed exercise info with instructions, muscle targeting, and equipment requirements
+- **💾 Deep Caching** - Exercises cached in IndexedDB for offline access (works at the gym!)
 - **📊 Progress History** - View your workout history and track your progress over time
 - **📱 PWA Support** - Install on your phone for quick access and offline functionality
 - **🌙 Calm Dark Theme** - Easy on the eyes with a zen-inspired design
@@ -19,6 +22,7 @@ A beautiful, calm-styled Progressive Web App for tracking gym workouts. Perfect 
 
 - Node.js 18+ 
 - npm or yarn
+- RapidAPI account (free) for exercise GIFs
 
 ### Installation
 
@@ -30,11 +34,17 @@ cd righttrack
 # Install dependencies
 npm install
 
+# Set up your API key (see SETUP.md for details)
+# Create a .env file with:
+# VITE_RAPIDAPI_KEY=your_api_key_here
+
 # Start the development server
 npm run dev
 ```
 
 The app will be available at `http://localhost:5173`
+
+**📖 See [SETUP.md](./SETUP.md) for detailed API setup instructions**
 
 ### Building for Production
 
@@ -72,6 +82,8 @@ RightTrack features a calm, zen-inspired design with:
 - **React Router v7** - Navigation
 - **Framer Motion** - Smooth animations
 - **Lucide React** - Beautiful icons
+- **ExerciseDB API** - 1,300+ exercise GIFs and data
+- **IndexedDB** - Deep caching for offline support
 - **Vite PWA Plugin** - Progressive Web App capabilities
 - **CSS Modules** - Scoped styling
 

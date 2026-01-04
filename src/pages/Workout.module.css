@@ -217,7 +217,11 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.exerciseTitle {
+  flex: 1;
 }
 
 .exerciseName {
@@ -225,6 +229,12 @@
   font-size: 1.375rem;
   font-weight: 600;
   color: var(--color-text-primary);
+}
+
+.exerciseActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
 }
 
 .swappedBadge {
@@ -239,6 +249,23 @@
   border-radius: var(--radius-full);
   font-size: 0.7rem;
   font-weight: 600;
+}
+
+.infoIconBtn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  transition: all var(--transition-fast);
+}
+
+.infoIconBtn:hover {
+  background: var(--color-accent-soft);
+  color: var(--color-accent-primary);
 }
 
 .swapBtn {
@@ -257,6 +284,15 @@
 .swapBtn:hover {
   background: var(--color-bg-hover);
   color: var(--color-text-primary);
+}
+
+.gifPreview {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background: var(--color-bg-deep);
+  border-radius: var(--radius-lg);
 }
 
 .setsContainer {

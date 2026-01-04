@@ -25,3 +25,7 @@ dist-ssr
 
 # PWA
 dev-dist
+
+# Environment variables
+.env
+.env.local

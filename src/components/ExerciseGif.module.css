@@ -1,0 +1,95 @@
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sm {
+  width: 80px;
+  height: 80px;
+}
+
+.md {
+  width: 120px;
+  height: 120px;
+}
+
+.lg {
+  width: 200px;
+  height: 200px;
+}
+
+.xl {
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 400px;
+}
+
+.loader,
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  color: var(--color-text-muted);
+  padding: var(--spacing-md);
+  text-align: center;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  color: var(--color-accent-primary);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingText,
+.errorText {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.error {
+  color: var(--color-text-muted);
+}
+
+.imageWrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.gif {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nameOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--spacing-sm);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+}

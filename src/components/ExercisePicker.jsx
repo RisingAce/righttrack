@@ -1,8 +1,10 @@
 import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { Search, Dumbbell, Target, Cable, User, Cog } from 'lucide-react'
+import { Search, Dumbbell, Target, Cable, User, Cog, Info } from 'lucide-react'
 import { useAppStore } from '../store/StoreContext'
 import { Input } from './Input'
+import { ExerciseGif } from './ExerciseGif'
+import { ExerciseDetailModal } from './ExerciseDetailModal'
 import styles from './ExercisePicker.module.css'
 
 const categoryIcons = {
@@ -26,6 +28,8 @@ export const ExercisePicker = ({ onSelect, selectedIds = [] }) => {
   const { exercises } = useAppStore()
   const [search, setSearch] = useState('')
   const [activeCategory, setActiveCategory] = useState('all')
+  const [detailModalOpen, setDetailModalOpen] = useState(false)
+  const [selectedExercise, setSelectedExercise] = useState(null)
 
   const categories = useMemo(() => {
     const cats = [...new Set(exercises.map(e => e.category))]
@@ -50,6 +54,12 @@ export const ExercisePicker = ({ onSelect, selectedIds = [] }) => {
     })
     return grouped
   }, [filteredExercises])
+
+  const handleShowDetail = (exercise, e) => {
+    e.stopPropagation()
+    setSelectedExercise(exercise)
+    setDetailModalOpen(true)
+  }
 
   return (
     <div className={styles.picker}>
@@ -93,15 +103,23 @@ export const ExercisePicker = ({ onSelect, selectedIds = [] }) => {
                     transition={{ delay: index * 0.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <div className={styles.exerciseIcon}>
-                      <Icon size={18} />
-                    </div>
+                    <ExerciseGif 
+                      gifUrl={exercise.gifUrl}
+                      name={exercise.name}
+                      size="sm"
+                    />
                     <div className={styles.exerciseInfo}>
                       <span className={styles.exerciseName}>{exercise.name}</span>
                       <span className={styles.exerciseMeta}>
                         {equipmentLabels[exercise.equipment] || exercise.equipment}
                       </span>
                     </div>
+                    <button 
+                      className={styles.infoBtn}
+                      onClick={(e) => handleShowDetail(exercise, e)}
+                    >
+                      <Info size={16} />
+                    </button>
                     {isSelected && (
                       <div className={styles.checkmark}>✓</div>
                     )}
@@ -112,6 +130,12 @@ export const ExercisePicker = ({ onSelect, selectedIds = [] }) => {
           </div>
         ))}
       </div>
+
+      <ExerciseDetailModal 
+        isOpen={detailModalOpen}
+        onClose={() => setDetailModalOpen(false)}
+        exerciseName={selectedExercise?.name}
+      />
     </div>
   )
 }
