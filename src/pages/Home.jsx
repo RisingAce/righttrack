@@ -45,15 +45,9 @@ export const Home = () => {
   const handleStartSelectedWorkout = () => {
     const template = selectedTemplate || todayWorkout
     if (template) {
-      // Start immediately to avoid relying on navigation state
-      const started = startWorkout(template.id)
-      if (!started) {
-        // Fallback to workout page if something went wrong
-        navigate('/workout', { state: { startTemplateId: template.id } })
-        return
-      }
-      // Pass the template ID to the workout page to start immediately
-      navigate('/workout')
+      // Pass the template ID to the workout page so it can self-start safely
+      startWorkout(template.id)
+      navigate('/workout', { state: { startTemplateId: template.id, from: 'home' } })
     }
   }
 

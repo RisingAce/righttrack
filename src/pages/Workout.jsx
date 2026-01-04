@@ -40,6 +40,7 @@ const [showFinishConfirm, setShowFinishConfirm] = useState(false)
 const [showDetailModal, setShowDetailModal] = useState(false)
 const [exerciseGifs, setExerciseGifs] = useState({})
 const [autoStartError, setAutoStartError] = useState(null)
+const [initializing, setInitializing] = useState(!!(location.state?.startTemplateId))
 const startIdRef = useRef(location.state?.startTemplateId || null)
 const fetchCountRef = useRef(0)
 const gifCacheRef = useRef(null)
@@ -66,7 +67,17 @@ const guessPoseSlugs = (name = '') => {
 
   // Handle starting workout from navigation state (e.g., from home page)
   useEffect(() => {
-    if (!startIdRef.current || currentWorkout) return
+    if (!startIdRef.current) return
+
+    // If we already have the workout for this template, stop the spinner
+    if (currentWorkout?.templateId === startIdRef.current) {
+      setInitializing(false)
+      startIdRef.current = null
+      window.history.replaceState({}, document.title)
+      return
+    }
+
+    setInitializing(true)
 
     const workout = startWorkout(startIdRef.current)
     if (workout) {
@@ -76,19 +87,23 @@ const guessPoseSlugs = (name = '') => {
       setAutoStartError('Scheduled workout template is missing. Pick another template.')
       setShowTemplates(true)
     }
+    setInitializing(false)
     startIdRef.current = null
     // Clear the location state so it doesn't start again on refresh
     window.history.replaceState({}, document.title)
   }, [startWorkout, currentWorkout])
 
   const handleStartWorkout = (templateId) => {
+    setInitializing(true)
     startWorkout(templateId)
     setShowTemplates(false)
+    setInitializing(false)
   }
 
   const handleCompleteSet = (exerciseIndex, setIndex) => {
-    const exercise = currentWorkout.exercises[exerciseIndex]
-    const set = exercise.sets[setIndex]
+    const exercise = exercisesList?.[exerciseIndex]
+    const set = exercise?.sets?.[setIndex]
+    if (!set) return
     completeSet(exerciseIndex, setIndex, set.reps, set.weight)
   }
 
@@ -114,20 +129,22 @@ const guessPoseSlugs = (name = '') => {
   }
 
   const getProgress = () => {
-    if (!currentWorkout) return { completed: 0, total: 0, percent: 0 }
+    const list = Array.isArray(currentWorkout?.exercises) ? currentWorkout.exercises : []
+    if (!list.length) return { completed: 0, total: 0, percent: 0 }
     let completed = 0
     let total = 0
-    currentWorkout.exercises.forEach(ex => {
-      ex.sets.forEach(set => {
+    list.forEach(ex => {
+      (ex.sets || []).forEach(set => {
         total++
-        if (set.completed) completed++
+        if (set?.completed) completed++
       })
     })
     return { completed, total, percent: total > 0 ? Math.round((completed / total) * 100) : 0 }
   }
 
   const progress = getProgress()
-  const hasExercises = currentWorkout?.exercises?.length > 0
+  const exercisesList = Array.isArray(currentWorkout?.exercises) ? currentWorkout.exercises : []
+  const hasExercises = exercisesList.length > 0
 
   useEffect(() => {
     if (currentWorkout && activeExercise >= (currentWorkout.exercises?.length || 0)) {
@@ -217,6 +234,25 @@ const guessPoseSlugs = (name = '') => {
   }, [currentWorkout, getExercise])
 
   // Template selection view
+  if (initializing && !currentWorkout) {
+    return (
+      <div className={styles.page}>
+        <header className={styles.header}>
+          <h1 className={styles.title}>Starting workout...</h1>
+        </header>
+        <Card>
+          <CardContent className={styles.emptyState}>
+            <div className={styles.emptyIcon}>
+              <Play size={32} />
+            </div>
+            <h3>Loading your scheduled session</h3>
+            <p>Hang tight while we set up your workout.</p>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
   if (!currentWorkout || showTemplates) {
     return (
       <div className={styles.page}>
@@ -271,12 +307,6 @@ const guessPoseSlugs = (name = '') => {
     )
   }
 
-  // Active workout view
-  const currentEx = currentWorkout.exercises[activeExercise]
-  const exerciseData = getExercise(currentEx.exerciseId)
-  const alternatives = getAlternatives(currentEx.exerciseId)
-  const exerciseNote = currentEx.note || ''
-
   if (!hasExercises) {
     return (
       <div className={styles.page}>
@@ -310,6 +340,46 @@ const guessPoseSlugs = (name = '') => {
     )
   }
 
+  // Active workout view
+  const currentEx = exercisesList[activeExercise]
+
+  if (!currentEx) {
+    return (
+      <div className={styles.page}>
+        <header className={styles.workoutHeader}>
+          <button className={styles.backBtn} onClick={() => setShowTemplates(true)}>
+            <ArrowLeft size={20} />
+          </button>
+          <div className={styles.workoutInfo}>
+            <h1 className={styles.workoutTitle}>{currentWorkout?.templateName || 'Workout'}</h1>
+            <span className={styles.progressText}>We couldn&apos;t load this exercise.</span>
+          </div>
+          <button className={styles.cancelBtn} onClick={handleCancel}>
+            <X size={20} />
+          </button>
+        </header>
+
+        <Card>
+          <CardContent className={styles.emptyState}>
+            <div className={styles.emptyIcon}>
+              <AlertTriangle size={32} />
+            </div>
+            <h3>Exercise data missing</h3>
+            <p>Reload the workout or pick a different template.</p>
+            <Button onClick={() => window.location.reload()}>Reload</Button>
+            <Button variant="secondary" onClick={() => setShowTemplates(true)}>
+              Choose Template
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  const exerciseData = getExercise(currentEx.exerciseId)
+  const alternatives = getAlternatives(currentEx.exerciseId)
+  const exerciseNote = currentEx.note || ''
+
   return (
     <div className={styles.page}>
       <header className={styles.workoutHeader}>
@@ -334,9 +404,9 @@ const guessPoseSlugs = (name = '') => {
       </header>
 
       <div className={styles.exerciseNav}>
-        {currentWorkout.exercises.map((ex, i) => {
-          const allCompleted = ex.sets.every(s => s.completed)
-          const someCompleted = ex.sets.some(s => s.completed)
+        {exercisesList.map((ex, i) => {
+          const allCompleted = (ex.sets || []).every(s => s.completed)
+          const someCompleted = (ex.sets || []).some(s => s.completed)
           return (
             <button
               key={i}
@@ -418,32 +488,32 @@ const guessPoseSlugs = (name = '') => {
             <span>Weight</span>
             <span></span>
           </div>
-          {currentEx.sets.map((set, setIdx) => (
+          {(currentEx.sets || []).map((set, setIdx) => (
             <motion.div
               key={setIdx}
-              className={`${styles.setRow} ${set.completed ? styles.setCompleted : ''}`}
+              className={`${styles.setRow} ${set?.completed ? styles.setCompleted : ''}`}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: setIdx * 0.05 }}
             >
               <span className={styles.setNum}>{setIdx + 1}</span>
-              <span className={styles.setTarget}>{set.reps} reps</span>
+              <span className={styles.setTarget}>{set?.reps} reps</span>
               <div className={styles.setWeight}>
                 <input
                   type="number"
                   min="0"
                   step="0.5"
-                  value={set.weight}
+                  value={set?.weight ?? 0}
                   onChange={(e) => handleUpdateSet(activeExercise, setIdx, 'weight', parseFloat(e.target.value) || 0)}
                 />
                 <span className={styles.weightUnit}>kg</span>
               </div>
               <button
-                className={`${styles.setBtn} ${set.completed ? styles.done : ''}`}
-                onClick={() => !set.completed && handleCompleteSet(activeExercise, setIdx)}
-                disabled={set.completed}
+                className={`${styles.setBtn} ${set?.completed ? styles.done : ''}`}
+                onClick={() => !set?.completed && handleCompleteSet(activeExercise, setIdx)}
+                disabled={!!set?.completed}
               >
-                {set.completed ? <Check size={18} /> : 'Done'}
+                {set?.completed ? <Check size={18} /> : 'Done'}
               </button>
             </motion.div>
           ))}

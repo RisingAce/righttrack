@@ -8,6 +8,7 @@ import { Templates } from './pages/Templates'
 import { History } from './pages/History'
 import { Profile } from './pages/Profile'
 import { useExerciseCache } from './hooks/useExerciseCache'
+import { ErrorBoundary } from './components/ErrorBoundary'
 
 function App() {
   // Prefetch exercises on app load for offline use
@@ -15,16 +16,18 @@ function App() {
 
   return (
     <StoreProvider>
-      <Layout cacheStatus={cacheStatus}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/workout" element={<Workout />} />
-          <Route path="/schedule" element={<Schedule />} />
-          <Route path="/templates" element={<Templates />} />
-          <Route path="/history" element={<History />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
-      </Layout>
+      <ErrorBoundary>
+        <Layout cacheStatus={cacheStatus}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/workout" element={<Workout />} />
+            <Route path="/schedule" element={<Schedule />} />
+            <Route path="/templates" element={<Templates />} />
+            <Route path="/history" element={<History />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </Layout>
+      </ErrorBoundary>
     </StoreProvider>
   )
 }

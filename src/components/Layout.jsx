@@ -1,6 +1,6 @@
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, Dumbbell, Calendar, BarChart3, User, Plus } from 'lucide-react'
+import { Home, Dumbbell, Calendar, BarChart3, User, Plus, RotateCcw } from 'lucide-react'
 import styles from './Layout.module.css'
 import { usePwaRegistration } from '../hooks/usePwaRegistration'
 import { PwaToast } from './PwaToast'
@@ -20,6 +20,10 @@ export const Layout = ({ children, cacheStatus }) => {
 
   const handleCreateTemplate = () => {
     navigate('/templates', { state: { openCreate: true } })
+  }
+
+  const handleRefresh = () => {
+    window.location.reload()
   }
 
   return (
@@ -71,7 +75,15 @@ export const Layout = ({ children, cacheStatus }) => {
               )}
             </NavLink>
           ))}
-          
+
+          <button
+            className={styles.navRefresh}
+            onClick={handleRefresh}
+            aria-label="Refresh"
+          >
+            <RotateCcw size={18} strokeWidth={2.5} />
+          </button>
+
           <motion.button
             className={styles.createBtn}
             onClick={handleCreateTemplate}
