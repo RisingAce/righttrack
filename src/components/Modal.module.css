@@ -1,98 +1,157 @@
-.wrapper {
+.overlay {
   position: fixed;
   inset: 0;
+  background: rgba(6, 8, 15, 0.85);
+  backdrop-filter: var(--blur-lg);
+  -webkit-backdrop-filter: var(--blur-lg);
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
-  z-index: 200;
-  padding: var(--spacing-md);
-}
-
-@media (min-width: 640px) {
-  .wrapper {
-    align-items: center;
-  }
-}
-
-.backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  z-index: 1000;
+  padding: var(--spacing-lg);
 }
 
 .modal {
   position: relative;
-  width: 100%;
-  max-height: 90vh;
-  background: var(--color-bg-secondary);
-  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  background: var(--gradient-card);
+  backdrop-filter: var(--blur-xl);
+  -webkit-backdrop-filter: var(--blur-xl);
+  border-radius: var(--radius-2xl);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-2xl), 0 0 0 1px rgba(16, 185, 129, 0.1);
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
-@media (min-width: 640px) {
-  .modal {
-    border-radius: var(--radius-xl);
-  }
+.modal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient-accent);
+  opacity: 0.8;
 }
 
+/* Sizes */
 .sm {
+  width: 100%;
   max-width: 400px;
 }
 
 .md {
-  max-width: 500px;
+  width: 100%;
+  max-width: 600px;
 }
 
 .lg {
-  max-width: 640px;
+  width: 100%;
+  max-width: 800px;
 }
 
 .full {
-  max-width: none;
-  height: 100%;
-  max-height: 100%;
-  border-radius: 0;
+  width: 100%;
+  max-width: 95vw;
+  max-height: 95vh;
 }
 
+/* Header */
 .header {
+  padding: var(--spacing-xl);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--spacing-lg);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  gap: var(--spacing-md);
+  background: linear-gradient(180deg, rgba(26, 31, 53, 0.8) 0%, transparent 100%);
 }
 
 .title {
   font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 800;
   color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
 }
 
-.close {
+.closeBtn {
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-md);
+  background: var(--color-bg-glass);
+  backdrop-filter: var(--blur-sm);
+  -webkit-backdrop-filter: var(--blur-sm);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--color-text-muted);
-  transition: all var(--transition-fast);
+  transition: all var(--transition-normal);
+  flex-shrink: 0;
 }
 
-.close:hover {
-  background: var(--color-bg-elevated);
+.closeBtn:hover {
+  background: var(--color-bg-hover);
   color: var(--color-text-primary);
+  transform: rotate(90deg) scale(1.1);
+  border-color: rgba(16, 185, 129, 0.3);
 }
 
+/* Content */
 .content {
-  flex: 1;
+  padding: var(--spacing-xl);
   overflow-y: auto;
-  padding: var(--spacing-lg);
+  flex: 1;
+}
+
+.content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content::-webkit-scrollbar-track {
+  background: transparent;
+  margin: var(--spacing-md);
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--color-accent-primary), var(--color-accent-tertiary));
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.3);
+}
+
+/* Footer */
+.footer {
+  padding: var(--spacing-xl);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: flex-end;
+  background: linear-gradient(0deg, rgba(26, 31, 53, 0.8) 0%, transparent 100%);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .overlay {
+    padding: var(--spacing-md);
+  }
+  
+  .modal {
+    border-radius: var(--radius-xl);
+  }
+  
+  .header,
+  .content,
+  .footer {
+    padding: var(--spacing-lg);
+  }
+  
+  .title {
+    font-size: 1.25rem;
+  }
 }
