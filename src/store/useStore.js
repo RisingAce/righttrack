@@ -35,12 +35,12 @@ const buildDefaultSchedule = (templates) => {
   }, {})
 
   return {
-    monday: byName['chest & shoulders split'] || null,
-    tuesday: byName['back strength'] || null,
+    monday: byName['chest & shoulders'] || null,
+    tuesday: byName['back'] || null,
     wednesday: byName['legs & arms'] || null,
-    thursday: byName['push power'] || null,
-    friday: byName['back & biceps volume'] || null,
-    saturday: byName['upper power'] || null,
+    thursday: byName['push day'] || null,
+    friday: byName['back + biceps'] || null,
+    saturday: byName['upper'] || null,
     sunday: null,
   }
 }
